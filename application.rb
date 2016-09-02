@@ -4,7 +4,9 @@ require "sinatra"
 require File.join(File.dirname(__FILE__), "environment")
 
 configure do
-  set :views, "#{File.dirname(__FILE__)}/views"
+  # set :views, "#{File.dirname(__FILE__)}/views"
+  set :root, "#{File.dirname(__FILE__)}/lib/app/"
+  #set :root, 'lib/app'
   set :show_exceptions, :after_handler
 end
 
@@ -19,5 +21,5 @@ end
 # root page
 get "/" do
   @profiles = Profile.all
-  erb :root
+  render :html, :index
 end
