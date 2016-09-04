@@ -1,17 +1,14 @@
 /* ;import '../lib/app/public/styles.css';*/
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Login from './Login.jsx';
+import { Router, Route, browserHistory } from 'react-router'
+import {Shoots, NewShoot} from './components/shoots.jsx';
 
-var App = React.createClass({
+ReactDOM.render((
+  <Router history={browserHistory}>
+    <Route path="/" component={Shoots}/>
+    <Route path="/new-shoot" component={NewShoot}/>
+  </Router>
+), document.getElementById('root'))
 
-  render: function() {
-    return (
-      <Login />
-    );
-  }
-
-});
-
-ReactDOM.render(<App name='World'/>, document.getElementById('root'))
 
