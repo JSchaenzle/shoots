@@ -23,3 +23,13 @@ get "/" do
   @profiles = Profile.all
   render :html, :index
 end
+
+
+
+post "/photoshoots" do
+  puts params
+end
+
+get "/photoshoots" do
+
+end

@@ -1,0 +1,1 @@
+export const ADD_PHOTOSHOOT = "ADD_PHOTOSHOOT";

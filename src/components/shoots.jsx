@@ -37,12 +37,12 @@ const EditShootForm = () => (
       <h4>Client Name:</h4>
       <input type="text"></input>
     </section>
-    
+
     <section>
       <h4>Shoot Date:</h4>
       <input type="date"></input>
     </section>
-    
+
   </div>
 )
 
