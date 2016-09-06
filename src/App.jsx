@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router'
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import {Shoots, NewShoot} from './components/shoots.jsx';
+import { PhotoshootsList } from './containers/photoshootsList.js';
 import { PhotoshootCreator } from './containers/photoshootCreator.js';
 import shootsApp from './reducers.js';
 
@@ -29,7 +29,7 @@ console.log("PhotoshootCreator: ", PhotoshootCreator );
 ReactDOM.render((
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/" component={Shoots}/>
+      <Route path="/" component={PhotoshootsList}/>
       <Route path="/new-shoot" component={PhotoshootCreator}/>
     </Router>
   </Provider>

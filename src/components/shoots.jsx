@@ -1,20 +1,35 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router'
 
-const Shoots = () => (
-  <div>
+const Shoots = (props) => {
+  console.log("Shoots props: ", props);
+
+  var photoshoots = props.photoshoots.map((s) => {
+    return (
+      <li>{s.name} - {s.date}</li>
+    )
+  });
+
+  return (
     <div>
-      <h2>New Photoshoot</h2>
-      <Link to="/new-shoot">Create</Link>
+      <div>
+        <h2>New Photoshoot</h2>
+        <Link to="/new-shoot">Create</Link>
+      </div>
+
+      <div>
+        <h2>Upcoming Shoots</h2>
+        <ul>
+          {photoshoots}
+        </ul>
+      </div>
+
+      <div>
+        <h3>Photoshoot history</h3>
+      </div>
     </div>
-    <div>
-      <h2>Upcoming Shoots</h2>
-    </div>
-    <div>
-      <h3>Photoshoot history</h3>
-    </div>
-  </div>
-)
+  )
+}
 
 const handleCreateShoot = () => {
   console.log("worked");
@@ -24,6 +39,7 @@ const handleCreateShoot = () => {
 class NewShoot extends React.Component {
   constructor(props) {
     super(props);
+    console.log("NewShoot props: ", props);
     this.handleDetailChanged = this.handleDetailChanged.bind(this);
     this.handleCreatePhotoshoot = this.handleCreatePhotoshoot.bind(this);
     this.state = {
