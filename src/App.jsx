@@ -2,8 +2,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router'
+import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import {Shoots, NewShoot} from './components/shoots.jsx';
+import { PhotoshootCreator } from './containers/photoshootCreator.js';
 import shootsApp from './reducers.js';
 
 import {addPhotoshoot} from "./actions/photoshootActions.js";
@@ -13,20 +15,24 @@ let store = createStore(shootsApp);
 console.log("initial state:", store.getState());
 
 let unsubscribe = store.subscribe(() => {
-  console.log("updated state:", store.getState());
+  console.log("updated redux state:", store.getState());
 });
 
 store.dispatch(addPhotoshoot("Bob", "some date"));
 store.dispatch(addPhotoshoot("Joe", "some date"));
 store.dispatch(addPhotoshoot("Steve", "steves date"));
 
-unsubscribe();
+//unsubscribe();
+
+console.log("PhotoshootCreator: ", PhotoshootCreator );
 
 ReactDOM.render((
-  <Router history={browserHistory}>
-    <Route path="/" component={Shoots}/>
-    <Route path="/new-shoot" component={NewShoot}/>
-  </Router>
+  <Provider store={store}>
+    <Router history={browserHistory}>
+      <Route path="/" component={Shoots}/>
+      <Route path="/new-shoot" component={PhotoshootCreator}/>
+    </Router>
+  </Provider>
 ), document.getElementById('root'))
 
 

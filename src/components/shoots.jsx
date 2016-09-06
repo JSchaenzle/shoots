@@ -21,30 +21,73 @@ const handleCreateShoot = () => {
   browserHistory.push("/");
 }
 
-const NewShoot = () => (
-  <div>
-    <h2>New Photoshoot</h2>
-    <EditShootForm />
-    <section>
-      <input type="submit" value="Create" onClick={handleCreateShoot}></input>
-    </section>
-  </div>
-)
+class NewShoot extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleDetailChanged = this.handleDetailChanged.bind(this);
+    this.handleCreatePhotoshoot = this.handleCreatePhotoshoot.bind(this);
+    this.state = {
+      photoshootDetails: {}
+    }
+  }
 
-const EditShootForm = () => (
-  <div>
-    <section>
-      <h4>Client Name:</h4>
-      <input type="text"></input>
-    </section>
+  handleDetailChanged(detail) {
+    console.log("handling detail changed");
+    const updatedDetails = Object.assign({}, this.state.photoshootDetails, detail);
+    this.setState({photoshootDetails: updatedDetails}, (s) => {
+      console.log("New state: ", this.state);
+    });
+  }
 
-    <section>
-      <h4>Shoot Date:</h4>
-      <input type="date"></input>
-    </section>
+  handleCreatePhotoshoot() {
+    console.log("Create photoshoot clicked. Calling callback mapped to dispatch");
+    this.props.onAddPhotoshootClick(this.state.photoshootDetails);
+  }
 
-  </div>
-)
+  render() {
+    return (
+      <div>
+        <h2>New Photoshoot</h2>
+        <EditShootForm details={this.state.photoshootDetails}
+                       onDetailChanged={this.handleDetailChanged} />
+        <section>
+          <input type="submit" value="Create" onClick={this.handleCreatePhotoshoot}></input>
+        </section>
+      </div>
+    );
+  }
+}
+
+class EditShootForm extends React.Component {
+  constructor() {
+    super();
+    this.sendChangedDetail = this.sendChangedDetail.bind(this);
+  }
+
+  sendChangedDetail(detail) {
+    return (event) => {
+      console.log("Sending changed detail to parent");
+      this.props.onDetailChanged({[detail]: event.target.value});
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <section>
+          <h4>Client Name:</h4>
+          <input type="text" value={this.props.details.name} onChange={this.sendChangedDetail("name")}></input>
+        </section>
+
+        <section>
+          <h4>Shoot Date:</h4>
+          <input type="date" value={this.props.details.date} onChange={this.sendChangedDetail("date")}></input>
+        </section>
+
+      </div>
+    )
+  }
+}
 
 
 export {Shoots, NewShoot}
