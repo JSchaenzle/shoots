@@ -38,5 +38,6 @@ get "/" do
 end
 
 get "/photoshoots" do
-
+  return photoshoots.to_json
 end
+

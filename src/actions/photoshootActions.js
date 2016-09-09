@@ -1,36 +1,47 @@
-import { ADD_PHOTOSHOOT, RECEIVE_CREATED_PHOTOSHOOT } from './actionTypes.js';
+import { ADD_PHOTOSHOOT_START, ADD_PHOTOSHOOT_SUCCESS, ADD_PHOTOSHOOT_ERROR } from './actionTypes.js';
 import fetch from 'isomorphic-fetch';
 import $ from 'jquery';
+import { browserHistory } from 'react-router';
 
-export const addPhotoshoot = (name, date) => {
+export const addPhotoshootStarted = () => {
   return {
-    type: ADD_PHOTOSHOOT,
-    payload: {
-      name: name,
-      date: date
-    }
+    type: ADD_PHOTOSHOOT_START,
+    payload: {}
   };
 };
 
-export const receiveCreatedPhotoshoot = (json) => {
+export const addPhotoshootSuccess = (details) => {
   return {
-    type: RECEIVE_CREATED_PHOTOSHOOT,
-    payload: json
+    type: ADD_PHOTOSHOOT_SUCCESS,
+    payload: details
+  };
+};
+
+export const addPhotoshootError = (errorInfo) => {
+  return {
+    type: ADD_PHOTOSHOOT_ERROR,
+    payload: {errorInfo}
   };
 };
 
 export function requestAddPhotoshoot(name, date) {
   return (dispatch) => {
-    // dispatch(addPhotoshoot(name,date));
+    dispatch(addPhotoshootStarted());
 
     let newPost = {name: name, date: date};
     return $.post('/photoshoots', JSON.stringify(newPost))
-      .then(response => {
-        console.log("Got response", response);
-        return JSON.parse(response);
-      })
+      .then(
+        (response) => {
+          console.log("Got response", response);
+          return JSON.parse(response);
+        },
+        (xhr, status, error) => {
+          console.log("Error received while adding photoshoot");
+          addPhotoshootError(error);
+        })
       .then(json => {
-        dispatch(receiveCreatedPhotoshoot(json));
+        dispatch(addPhotoshootSuccess(json));
+        browserHistory.push('/');
       });
   };
 };

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { NewShoot } from '../components/shoots.jsx';
+import NewShoot from '../components/NewShoot.jsx';
 import { requestAddPhotoshoot } from '../actions/photoshootActions.js';
 
 const mapStateToProps = (state) => {

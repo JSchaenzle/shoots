@@ -9,12 +9,14 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { PhotoshootsList } from './containers/photoshootsList.js';
 import { PhotoshootCreator } from './containers/photoshootCreator.js';
+import EditShoot from './components/EditShoot.jsx';
 import shootsApp from './reducers.js';
 
 import {addPhotoshoot} from "./actions/photoshootActions.js";
 
 const loggerMiddleware = createLogger();
 
+console.log("Creating initial redux store...");
 let store = createStore(
   shootsApp,
   applyMiddleware(
@@ -27,11 +29,6 @@ let unsubscribe = store.subscribe(() => {
   console.log("updated redux state:", store.getState());
 });
 
-store.dispatch(addPhotoshoot("Bob", "some date"));
-store.dispatch(addPhotoshoot("Joe", "some date"));
-store.dispatch(addPhotoshoot("Steve", "steves date"));
-
-//unsubscribe();
 
 console.log("PhotoshootCreator: ", PhotoshootCreator );
 
@@ -40,6 +37,7 @@ ReactDOM.render((
     <Router history={browserHistory}>
       <Route path="/" component={PhotoshootsList}/>
       <Route path="/new-shoot" component={PhotoshootCreator}/>
+      <Route path="/edit-shoot" component={EditShoot} />
     </Router>
   </Provider>
 ), document.getElementById('root'))
