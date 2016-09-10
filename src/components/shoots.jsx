@@ -5,7 +5,7 @@ export const Shoots = (props) => {
 
   var photoshoots = props.photoshoots.list.map((s) => {
     return (
-      <Link to="/edit-shoot" details={s} >{s.name} - {s.date}</Link>
+      <Link to={`/edit-shoot/${s.id}`} key={s.id}>{s.name} - {s.date}</Link>
     )
   });
 

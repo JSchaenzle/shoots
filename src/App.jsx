@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { PhotoshootsList } from './containers/photoshootsList.js';
 import { PhotoshootCreator } from './containers/photoshootCreator.js';
-import EditShoot from './components/EditShoot.jsx';
+import { PhotoshootEditor } from './containers/PhotoshopEditor.js';
 import shootsApp from './reducers.js';
 
 import {addPhotoshoot} from "./actions/photoshootActions.js";
@@ -36,8 +36,8 @@ ReactDOM.render((
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path="/" component={PhotoshootsList}/>
-      <Route path="/new-shoot" component={PhotoshootCreator}/>
-      <Route path="/edit-shoot" component={EditShoot} />
+      <Route path="/new-shoot" component={PhotoshootCreator} />
+      <Route path="/edit-shoot/:photoshootId" component={PhotoshootEditor} />
     </Router>
   </Provider>
 ), document.getElementById('root'))

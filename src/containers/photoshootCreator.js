@@ -9,7 +9,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onAddPhotoshootClick: (details) => {
-      console.log("In Container. details:", details);
       dispatch(requestAddPhotoshoot(details.name, details.date));
     }
   };
