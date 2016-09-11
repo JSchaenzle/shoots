@@ -9,21 +9,21 @@ import {
   UPDATE_PHOTOSHOOT_SUCCESS,
   UPDATE_PHOTOSHOOT_ERROR } from './actionTypes.js';
 
-export const addPhotoshootStarted = () => {
+const addPhotoshootStarted = () => {
   return {
     type: ADD_PHOTOSHOOT_START,
     payload: {}
   };
 };
 
-export const addPhotoshootSuccess = (details) => {
+const addPhotoshootSuccess = (details) => {
   return {
     type: ADD_PHOTOSHOOT_SUCCESS,
     payload: details
   };
 };
 
-export const addPhotoshootError = (errorInfo) => {
+const addPhotoshootError = (errorInfo) => {
   return {
     type: ADD_PHOTOSHOOT_ERROR,
     payload: {errorInfo}
@@ -38,7 +38,6 @@ export function requestAddPhotoshoot(name, date) {
     return $.post('/photoshoots', JSON.stringify(newPost))
       .then(
         (response) => {
-          console.log("Got response", response);
           return JSON.parse(response);
         },
         (xhr, status, error) => {
@@ -57,16 +56,16 @@ export const updatePhotoshootStarted = () => {
     type: UPDATE_PHOTOSHOOT_START,
     payload: {}
   };
-}
+};
 
-export const updatePhotoshootSuccess = (details) => {
+const updatePhotoshootSuccess = (details) => {
   return {
     type: UPDATE_PHOTOSHOOT_SUCCESS,
     payload: details
   };
 };
 
-export const updatePhotoshootError = (errorInfo) => {
+const updatePhotoshootError = (errorInfo) => {
   return {
     type: UPDATE_PHOTOSHOOT_ERROR,
     payload: {errorInfo}
@@ -78,20 +77,26 @@ export function requestUpdatePhotoshoot(id, name, date) {
     dispatch(updatePhotoshootStarted());
 
     let updatedPost = {name: name, date: date};
-    return $.put(`/photoshoots/${id}`, JSON.stringify(updatedPost))
-      .then(
-        (response) => {
-          console.log("Got response", response);
-          return JSON.parse(response);
-        },
-        (xhr, status, error) => {
-          console.log("Error received while updating photoshoot");
-          updatePhotoshootError(error);
-        })
-      .then(json => {
-        dispatch(updatePhotoshootSuccess(json));
-        browserHistory.push('/');
-      });
+
+    return $.ajax({
+      url: `/photoshoots/${id}`,
+      type: 'PUT',
+      contentType: "application/json; charset=utf-8",
+      dataType   : "json",
+      data: JSON.stringify(updatedPost)
+    })
+    .then(
+      (response) => {
+        return response;
+      },
+      (xhr, status, error) => {
+        console.log("Error received while updating photoshoot");
+        updatePhotoshootError(error);
+      })
+    .then(json => {
+      dispatch(updatePhotoshootSuccess(json));
+      browserHistory.push('/');
+    });
   };
 };
 

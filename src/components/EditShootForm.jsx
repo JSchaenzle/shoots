@@ -13,10 +13,7 @@ export default class EditShootForm extends React.Component {
   }
 
   formattedDate() {
-    if (!this.props.details.date) {
-      return null;
-    }
-    let date = new Date(this.props.details.date);
+    let date = new Date(this.props.date);
     var day = ("0" + date.getDate()).slice(-2);
     var month = ("0" + (date.getMonth() + 1)).slice(-2);
     return date.getFullYear()+"-"+(month)+"-"+(day) ;
@@ -33,7 +30,7 @@ export default class EditShootForm extends React.Component {
       <div>
         <section>
           <h4>Client Name:</h4>
-          <input type="text" value={this.props.details.name} onChange={this.sendChangedDetail("name")}></input>
+          <input type="text" value={this.props.name} onChange={this.sendChangedDetail("name")}></input>
         </section>
 
         <section>
@@ -48,5 +45,11 @@ export default class EditShootForm extends React.Component {
 
 EditShootForm.propTypes = {
   onDetailChanged: React.PropTypes.func.isRequired,
-  details: React.PropTypes.object.isRequired
+  date: React.PropTypes.string.isRequired
 }
+
+EditShootForm.defaultProps = {
+  name: "",
+  date: ""
+}
+

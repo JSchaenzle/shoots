@@ -23,14 +23,13 @@ let store = createStore(
     thunkMiddleware,
     loggerMiddleware));
 
-console.log("initial state:", store.getState());
+/* console.log("initial state:", store.getState());
+ *
+ * let unsubscribe = store.subscribe(() => {
+ *   console.log("updated redux state:", store.getState());
+ * });*/
 
-let unsubscribe = store.subscribe(() => {
-  console.log("updated redux state:", store.getState());
-});
-
-
-console.log("PhotoshootCreator: ", PhotoshootCreator );
+/* console.log("PhotoshootCreator: ", PhotoshootCreator );*/
 
 ReactDOM.render((
   <Provider store={store}>

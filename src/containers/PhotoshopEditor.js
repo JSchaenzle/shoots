@@ -8,8 +8,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSavePhotoshootClick: (details) => {
-      dispatch(requestUpdatePhotoshoot(details.name, details.date));
+    onUpdatePhotoshootClick: (details) => {
+      dispatch(requestUpdatePhotoshoot(details.id, details.name, details.date));
     }
   };
 };

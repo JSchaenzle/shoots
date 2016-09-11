@@ -21,23 +21,18 @@ export default class NewShoot extends React.Component {
 
   handleDetailChanged(detail) {
     const updatedDetails = Object.assign({}, this.state.photoshootDetails, detail);
-    this.setState({photoshootDetails: updatedDetails}, (s) => {
-      console.log("New state: ", this.state);
-    });
+    this.setState({photoshootDetails: updatedDetails});
   }
 
   handleCreatePhotoshoot() {
-    console.log("Create photoshoot clicked. Calling callback mapped to dispatch");
     this.props.onAddPhotoshootClick(this.state.photoshootDetails);
   }
 
-
   render() {
-
     return (
       <div>
         <h2>New Photoshoot</h2>
-        <EditShootForm details={this.state.photoshootDetails}
+        <EditShootForm {...this.state.photoshootDetails}
                        onDetailChanged={this.handleDetailChanged} />
         <section>
           <input type="submit" value="Create" onClick={this.handleCreatePhotoshoot}></input>
