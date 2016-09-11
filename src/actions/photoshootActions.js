@@ -30,11 +30,12 @@ const addPhotoshootError = (errorInfo) => {
   };
 };
 
-export function requestAddPhotoshoot(name, date) {
+export function requestAddPhotoshoot(details) {
   return (dispatch) => {
     dispatch(addPhotoshootStarted());
 
-    let newPost = {name: name, date: date};
+    let newPost = Object.assign({}, details);
+
     return $.post('/photoshoots', JSON.stringify(newPost))
       .then(
         (response) => {
@@ -72,11 +73,14 @@ const updatePhotoshootError = (errorInfo) => {
   };
 };
 
-export function requestUpdatePhotoshoot(id, name, date) {
+export function requestUpdatePhotoshoot(details) {
   return (dispatch) => {
     dispatch(updatePhotoshootStarted());
 
-    let updatedPost = {name: name, date: date};
+    let updatedPost = Object.assign({}, details);
+    let id = updatedPost.id;
+    // Don't send the ID in the body. Only send it in url.
+    delete updatedPost.id;
 
     return $.ajax({
       url: `/photoshoots/${id}`,

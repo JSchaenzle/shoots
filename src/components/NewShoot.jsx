@@ -20,7 +20,9 @@ export default class NewShoot extends React.Component {
   }
 
   handleDetailChanged(detail) {
+    console.log("NewShoot detail changed. Detail: ", detail);
     const updatedDetails = Object.assign({}, this.state.photoshootDetails, detail);
+    console.log("Updted details: ", updatedDetails);
     this.setState({photoshootDetails: updatedDetails});
   }
 

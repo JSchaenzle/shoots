@@ -1,9 +1,12 @@
 import React from 'react';
 
 export default class EditShootForm extends React.Component {
+
   constructor() {
     super();
     this.sendChangedDetail = this.sendChangedDetail.bind(this);
+    this.formattedDate = this.formattedDate.bind(this);
+    this.handleDateChanged = this.handleDateChanged.bind(this);
   }
 
   sendChangedDetail(detail) {
@@ -13,19 +16,25 @@ export default class EditShootForm extends React.Component {
   }
 
   formattedDate() {
+    console.log("Formatting date to render");
     let date = new Date(this.props.date);
     var day = ("0" + date.getDate()).slice(-2);
     var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    return date.getFullYear()+"-"+(month)+"-"+(day) ;
+    let result = date.getFullYear()+"-"+(month)+"-"+(day);
+    console.log("Formatted: ", result);
+    return result;
   }
 
   handleDateChanged(event) {
     let date = event.target.valueAsDate;
+    console.log("Date", date);
     let dateStr = date.toISOString();
-    this.props.onDetailChanged(date: dateStr);
+    console.log("DateStr", dateStr);
+    this.props.onDetailChanged({date: dateStr});
   }
 
   render() {
+    console.log("Rendering EditShootForm");
     return (
       <div>
         <section>

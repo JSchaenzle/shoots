@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onUpdatePhotoshootClick: (details) => {
-      dispatch(requestUpdatePhotoshoot(details.id, details.name, details.date));
+      dispatch(requestUpdatePhotoshoot(details));
     }
   };
 };
