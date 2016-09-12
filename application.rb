@@ -30,6 +30,7 @@ end
 # root page
 get "/" do
   @profiles = Profile.all
+  @photoshoots = Photoshoot.all
   render :html, :index
 end
 
@@ -39,14 +40,36 @@ end
 
 post "/photoshoots" do
   newItem = JSON.parse(request.body.read)
-  newItem["id"] = photoshoots.length
-  photoshoots << newItem
-  body newItem.to_json
+  photoshoot = Photoshoot.create(
+    :name => newItem["name"],
+    :date => newItem["date"],
+    :price => BigDecimal.new(newItem["price"].to_s),
+    :created_at => Time.now
+  )
+
+  unless photoshoot.saved?
+    puts "ERROR: Photoshoot not saved."
+    puts photoshoot.error.inspect
+  end
+
+  body photoshoot.to_json
 end
 
 put "/photoshoots/:id" do |id|
   updatedDetails = JSON.parse(request.body.read)
-  existingItem = photoshoots.detect { |shoot| shoot["id"] == id.to_i }
-  existingItem.merge! updatedDetails
+  if updatedDetails.key? "price"
+    updatedDetails["price"]= BigDecimal.new(updatedDetails["price"].to_s)
+  end
+
+  existingItem = Photoshoot.get id.to_i
+  puts "Found item: #{existingItem.to_json}"
+  existingItem.update(updatedDetails)
+  puts "Update result: #{existingItem.to_json}"
+
+  unless existingItem.saved?
+    puts "ERROR: Photoshoot not saved."
+    puts existingItem.error.inspect
+  end
+
   body existingItem.to_json
 end

@@ -98,6 +98,7 @@ DEPENDENCIES
   dm-aggregates
   dm-core
   dm-migrations
+  dm-serializer
   dm-sqlite-adapter
   dm-timestamps
   dm-validations
@@ -108,3 +109,6 @@ DEPENDENCIES
   rake
   rspec
   sinatra
+
+BUNDLED WITH
+   1.12.5

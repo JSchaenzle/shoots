@@ -30,6 +30,10 @@ const addPhotoshootError = (errorInfo) => {
   };
 };
 
+const convertJsonToPhotoshoot = (json) => {
+  return Object.assign({}, json, {price: new Number(json.price)});
+};
+
 export function requestAddPhotoshoot(details) {
   return (dispatch) => {
     dispatch(addPhotoshootStarted());
@@ -46,7 +50,10 @@ export function requestAddPhotoshoot(details) {
           addPhotoshootError(error);
         })
       .then(json => {
-        dispatch(addPhotoshootSuccess(json));
+        return convertJsonToPhotoshoot(json);
+      })
+      .then(shoot => {
+        dispatch(addPhotoshootSuccess(shoot));
         browserHistory.push('/');
       });
   };
@@ -98,7 +105,10 @@ export function requestUpdatePhotoshoot(details) {
         updatePhotoshootError(error);
       })
     .then(json => {
-      dispatch(updatePhotoshootSuccess(json));
+      return convertJsonToPhotoshoot(json);
+    })
+    .then(shoot => {
+      dispatch(updatePhotoshootSuccess(shoot));
       browserHistory.push('/');
     });
   };

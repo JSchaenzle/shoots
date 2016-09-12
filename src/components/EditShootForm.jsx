@@ -7,6 +7,7 @@ export default class EditShootForm extends React.Component {
     this.sendChangedDetail = this.sendChangedDetail.bind(this);
     this.formattedDate = this.formattedDate.bind(this);
     this.handleDateChanged = this.handleDateChanged.bind(this);
+    this.handlePriceChanged = this.handlePriceChanged.bind(this);
   }
 
   sendChangedDetail(detail) {
@@ -33,6 +34,11 @@ export default class EditShootForm extends React.Component {
     this.props.onDetailChanged({date: dateStr});
   }
 
+  handlePriceChanged(event) {
+    let price = Number(event.target.value);
+    this.props.onDetailChanged({price: price});
+  }
+
   render() {
     console.log("Rendering EditShootForm");
     return (
@@ -45,6 +51,12 @@ export default class EditShootForm extends React.Component {
         <section>
           <h4>Shoot Date:</h4>
           <input type="date" value={this.formattedDate()} onChange={this.handleDateChanged}></input>
+        </section>
+
+        <section>
+          <h4>Charge:</h4>
+          <span>$</span>
+          <input type="number" value={this.props.price} onChange={this.handlePriceChanged}></input>
         </section>
 
       </div>

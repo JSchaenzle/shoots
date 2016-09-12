@@ -37,7 +37,9 @@ export default class NewShoot extends React.Component {
         <EditShootForm {...this.state.photoshootDetails}
                        onDetailChanged={this.handleDetailChanged} />
         <section>
-          <input type="submit" value="Create" onClick={this.handleCreatePhotoshoot}></input>
+          <p>
+            <input type="submit" value="Create" onClick={this.handleCreatePhotoshoot}></input>
+          </p>
         </section>
       </div>
     );
