@@ -12,7 +12,8 @@ import { PhotoshootCreator } from './containers/photoshootCreator.js';
 import { PhotoshootEditor } from './containers/PhotoshopEditor.js';
 import shootsApp from './reducers.js';
 
-import {addPhotoshoot} from "./actions/photoshootActions.js";
+import {requestRetrieveAllPhotoshoots} from "./actions/photoshootActions.js";
+
 
 const loggerMiddleware = createLogger();
 
@@ -30,6 +31,9 @@ let store = createStore(
  * });*/
 
 /* console.log("PhotoshootCreator: ", PhotoshootCreator );*/
+
+
+store.dispatch(requestRetrieveAllPhotoshoots());
 
 ReactDOM.render((
   <Provider store={store}>

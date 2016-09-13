@@ -7,7 +7,11 @@ import {
   ADD_PHOTOSHOOT_ERROR,
   UPDATE_PHOTOSHOOT_START,
   UPDATE_PHOTOSHOOT_SUCCESS,
-  UPDATE_PHOTOSHOOT_ERROR } from './actionTypes.js';
+  UPDATE_PHOTOSHOOT_ERROR,
+  RETRIEVE_ALL_PHOTOSHOOTS_START,
+  RETRIEVE_ALL_PHOTOSHOOTS_SUCCESS,
+  RETRIEVE_ALL_PHOTOSHOOTS_ERROR
+} from './actionTypes.js';
 
 const addPhotoshootStarted = () => {
   return {
@@ -114,3 +118,51 @@ export function requestUpdatePhotoshoot(details) {
   };
 };
 
+
+export const retrieveAllPhotoshootsStarted = () => {
+  return {
+    type: RETRIEVE_ALL_PHOTOSHOOTS_START,
+    payload: {}
+  };
+};
+
+const retrieveAllPhotoshootsSuccess = (photoshoots) => {
+  return {
+    type: RETRIEVE_ALL_PHOTOSHOOTS_SUCCESS,
+    payload: photoshoots
+  };
+};
+
+const retrieveAllPhotoshootsError = (errorInfo) => {
+  return {
+    type: RETRIEVE_ALL_PHOTOSHOOTS_ERROR,
+    payload: {errorInfo}
+  };
+};
+
+export function requestRetrieveAllPhotoshoots(details) {
+  return (dispatch) => {
+    dispatch(retrieveAllPhotoshootsStarted());
+
+    return $.get(`/photoshoots`)
+    .then(
+      (response) => {
+        let body = response;
+        console.log(response);
+        return body;
+      },
+      (xhr, status, error) => {
+        console.log("Error received while updating photoshoot");
+        retrieveAllPhotoshootsError(error);
+      })
+    .then(json => {
+      return json.map((shoot) => {
+        return convertJsonToPhotoshoot(shoot);
+      });
+    })
+    .then(shoots => {
+      dispatch(retrieveAllPhotoshootsSuccess(shoots));
+      browserHistory.push('/');
+    });
+  };
+};

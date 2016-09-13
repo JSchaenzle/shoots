@@ -35,7 +35,9 @@ get "/" do
 end
 
 get "/photoshoots" do
-  return photoshoots.to_json
+  content_type 'application/json'
+  puts Photoshoot.all.to_json
+  body Photoshoot.all.to_json
 end
 
 post "/photoshoots" do
@@ -62,9 +64,7 @@ put "/photoshoots/:id" do |id|
   end
 
   existingItem = Photoshoot.get id.to_i
-  puts "Found item: #{existingItem.to_json}"
   existingItem.update(updatedDetails)
-  puts "Update result: #{existingItem.to_json}"
 
   unless existingItem.saved?
     puts "ERROR: Photoshoot not saved."

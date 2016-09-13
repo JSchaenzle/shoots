@@ -3,7 +3,11 @@ import { ADD_PHOTOSHOOT_START,
          ADD_PHOTOSHOOT_ERROR,
          UPDATE_PHOTOSHOOT_START,
          UPDATE_PHOTOSHOOT_SUCCESS,
-         UPDATE_PHOTOSHOOT_ERROR } from '../actions/actionTypes.js';
+         UPDATE_PHOTOSHOOT_ERROR,
+         RETRIEVE_ALL_PHOTOSHOOTS_START,
+         RETRIEVE_ALL_PHOTOSHOOTS_SUCCESS,
+         RETRIEVE_ALL_PHOTOSHOOTS_ERROR
+       } from '../actions/actionTypes.js';
 var update = require('react-addons-update');
 
 const initialState = {
@@ -16,6 +20,7 @@ const photoshoots = (state = initialState, action) => {
 
     case ADD_PHOTOSHOOT_START:
     case UPDATE_PHOTOSHOOT_START:
+    case RETRIEVE_ALL_PHOTOSHOOTS_START:
       return update(state, {retrieving: {$set: true}});
 
     case ADD_PHOTOSHOOT_SUCCESS:
@@ -31,6 +36,10 @@ const photoshoots = (state = initialState, action) => {
       });
       Object.assign(shoot, action.payload);
       return copy;
+
+    case RETRIEVE_ALL_PHOTOSHOOTS_SUCCESS:
+      let newState = update(state, {list: {$set: action.payload}});
+      return newState;
 
     default:
       return state;
