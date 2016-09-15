@@ -12,7 +12,7 @@ export const Shoots = (props) => {
   });
 
   return (
-    <div>
+    <div style={{backgroundColor: "rgba(255, 255, 255, 0.95)", width: "500px", marginRight: "auto", marginLeft: "auto", padding: "15px"}}>
       <div>
         <h2>New Photoshoot</h2>
         <Link to="/new-shoot">Create</Link>
