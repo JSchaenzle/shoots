@@ -69,9 +69,23 @@ put "/api/photoshoots/:id" do |id|
   body existingItem.to_json
 end
 
+
 # Sinarta uses the first handler that matches each route. Since react-router is
-# being used for routing we need to re-route all non-matching paths to index
+# being used for routing we need to re-route all non-matching paths to index.
+# If a non-matching api is requested we return 404
+
+respond_not_found = proc { status 404 }
+get    "/api/*",  &respond_not_found
+post   "/api/*",  &respond_not_found
+put    "/api/*",  &respond_not_found
+patch  "/api/*",  &respond_not_found
+delete "/api/*",  &respond_not_found
+
 get "*" do
   puts "Using catch all route handler"
   render :html, :index
+end
+
+not_found do
+  'The requested page is not found'
 end
