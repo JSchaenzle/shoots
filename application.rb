@@ -21,26 +21,21 @@ helpers do
   # add your helpers here
 end
 
-photoshoots = []
-
 before do
   # sleep 1
 end
 
 # root page
 get "/" do
-  @profiles = Profile.all
-  @photoshoots = Photoshoot.all
   render :html, :index
 end
 
-get "/photoshoots" do
+get "/api/photoshoots" do
   content_type 'application/json'
-  puts Photoshoot.all.to_json
   body Photoshoot.all.to_json
 end
 
-post "/photoshoots" do
+post "/api/photoshoots" do
   newItem = JSON.parse(request.body.read)
   photoshoot = Photoshoot.create(
     :name => newItem["name"],
@@ -57,7 +52,7 @@ post "/photoshoots" do
   body photoshoot.to_json
 end
 
-put "/photoshoots/:id" do |id|
+put "/api/photoshoots/:id" do |id|
   updatedDetails = JSON.parse(request.body.read)
   if updatedDetails.key? "price"
     updatedDetails["price"]= BigDecimal.new(updatedDetails["price"].to_s)
@@ -72,4 +67,9 @@ put "/photoshoots/:id" do |id|
   end
 
   body existingItem.to_json
+end
+
+get "*" do
+  puts "Using catch all route handler"
+  render :html, :index
 end

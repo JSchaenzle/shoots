@@ -6,16 +6,16 @@ export const Shoots = (props) => {
   var photoshoots = props.photoshoots.list.map((s) => {
     return (
       <li key={s.id} >
-        <Link to={`/edit-shoot/${s.id}`} >{s.name} - {s.date}</Link>
+        <Link to={`/photoshoots/edit-shoot/${s.id}`} >{s.name} - {s.date}</Link>
       </li>
     )
   });
 
   return (
-    <div style={{backgroundColor: "rgba(255, 255, 255, 0.95)", width: "500px", marginRight: "auto", marginLeft: "auto", padding: "15px"}}>
+    <div >
       <div>
         <h2>New Photoshoot</h2>
-        <Link to="/new-shoot">Create</Link>
+        <Link to="/photoshoots/new-shoot">Create</Link>
       </div>
 
       <div>

@@ -2,7 +2,7 @@
   "name": "shoots-web-api",
   "version": "1.0.0",
   "description": "Photoshoot tracking app",
-  "main": "App.jsx",
+  "main": "index.jsx",
   "scripts": {
     "dev": "webpack-dev-server --content-base lib/app/views --progress --colors",
     "build": "webpack --config webpack.config.js --profile --progress --colors",

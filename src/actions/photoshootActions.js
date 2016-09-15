@@ -44,7 +44,7 @@ export function requestAddPhotoshoot(details) {
 
     let newPost = Object.assign({}, details);
 
-    return $.post('/photoshoots', JSON.stringify(newPost))
+    return $.post('/api/photoshoots', JSON.stringify(newPost))
       .then(
         (response) => {
           return JSON.parse(response);
@@ -58,7 +58,7 @@ export function requestAddPhotoshoot(details) {
       })
       .then(shoot => {
         dispatch(addPhotoshootSuccess(shoot));
-        browserHistory.push('/');
+        browserHistory.push('/photoshoots');
       });
   };
 };
@@ -94,7 +94,7 @@ export function requestUpdatePhotoshoot(details) {
     delete updatedPost.id;
 
     return $.ajax({
-      url: `/photoshoots/${id}`,
+      url: `/api/photoshoots/${id}`,
       type: 'PUT',
       contentType: "application/json; charset=utf-8",
       dataType   : "json",
@@ -113,7 +113,7 @@ export function requestUpdatePhotoshoot(details) {
     })
     .then(shoot => {
       dispatch(updatePhotoshootSuccess(shoot));
-      browserHistory.push('/');
+      browserHistory.push('/photoshoots');
     });
   };
 };
@@ -144,7 +144,7 @@ export function requestRetrieveAllPhotoshoots(details) {
   return (dispatch) => {
     dispatch(retrieveAllPhotoshootsStarted());
 
-    return $.get(`/photoshoots`)
+    return $.get(`/api/photoshoots`)
     .then(
       (response) => {
         let body = response;
@@ -162,7 +162,7 @@ export function requestRetrieveAllPhotoshoots(details) {
     })
     .then(shoots => {
       dispatch(retrieveAllPhotoshootsSuccess(shoots));
-      browserHistory.push('/');
+   //   browserHistory.push('/photoshoots');
     });
   };
 };
