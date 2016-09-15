@@ -35,7 +35,9 @@ const addPhotoshootError = (errorInfo) => {
 };
 
 const convertJsonToPhotoshoot = (json) => {
-  return Object.assign({}, json, {price: new Number(json.price)});
+  return Object.assign({}, json, {
+    price: new Number(json.price).valueOf()
+  });
 };
 
 export function requestAddPhotoshoot(details) {

@@ -8,7 +8,10 @@ export default class NewShoot extends React.Component {
     this.handleCreatePhotoshoot = this.handleCreatePhotoshoot.bind(this);
     this.state = {
       photoshootDetails: {
-        date: this.tomorrow()
+        name: "",
+        date: this.tomorrow(),
+        price: 0,
+        completed: false
       }
     }
   }

@@ -41,12 +41,13 @@ post "/api/photoshoots" do
     :name => newItem["name"],
     :date => newItem["date"],
     :price => BigDecimal.new(newItem["price"].to_s),
+    :completed => newItem["completed"],
     :created_at => Time.now
   )
 
   unless photoshoot.saved?
     puts "ERROR: Photoshoot not saved."
-    puts photoshoot.error.inspect
+    puts photoshoot.errors.inspect
   end
 
   body photoshoot.to_json

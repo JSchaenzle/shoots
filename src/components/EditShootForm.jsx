@@ -8,6 +8,7 @@ export default class EditShootForm extends React.Component {
     this.formattedDate = this.formattedDate.bind(this);
     this.handleDateChanged = this.handleDateChanged.bind(this);
     this.handlePriceChanged = this.handlePriceChanged.bind(this);
+    this.handleCompletedChanged = this.handleCompletedChanged.bind(this);
   }
 
   sendChangedDetail(detail) {
@@ -39,24 +40,34 @@ export default class EditShootForm extends React.Component {
     this.props.onDetailChanged({price: price});
   }
 
+  handleCompletedChanged(event) {
+    const completed = event.target.checked;
+    this.props.onDetailChanged({completed: completed});
+  }
+
   render() {
-    console.log("Rendering EditShootForm");
+    console.log("Rendering EditShootForm. Completed? ", this.props.completed);
     return (
       <div>
         <section>
           <h4>Client Name:</h4>
-          <input type="text" value={this.props.name} onChange={this.sendChangedDetail("name")}></input>
+          <input type="text" value={this.props.name} onChange={this.sendChangedDetail("name")} disabled={this.props.completed}></input>
         </section>
 
         <section>
           <h4>Shoot Date:</h4>
-          <input type="date" value={this.formattedDate()} onChange={this.handleDateChanged}></input>
+          <input type="date" value={this.formattedDate()} onChange={this.handleDateChanged} disabled={this.props.completed}></input>
         </section>
 
         <section>
-          <h4>Charge:</h4>
+          <h4>Price:</h4>
           <span>$</span>
-          <input type="number" value={this.props.price} onChange={this.handlePriceChanged}></input>
+          <input type="number" value={this.props.price} onChange={this.handlePriceChanged} disabled={this.props.completed}></input>
+        </section>
+
+        <section>
+          <h4>Completed:</h4>
+          <input type="checkbox" checked={this.props.completed} onChange={this.handleCompletedChanged}></input>
         </section>
 
       </div>
@@ -66,11 +77,13 @@ export default class EditShootForm extends React.Component {
 
 EditShootForm.propTypes = {
   onDetailChanged: React.PropTypes.func.isRequired,
-  date: React.PropTypes.string.isRequired
+  name: React.PropTypes.string.isRequired,
+  date: React.PropTypes.string.isRequired,
+  price: React.PropTypes.number.isRequired,
+  completed: React.PropTypes.bool.isRequired
 }
 
 EditShootForm.defaultProps = {
   name: "",
-  date: ""
 }
 
