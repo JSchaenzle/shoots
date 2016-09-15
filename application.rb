@@ -69,6 +69,8 @@ put "/api/photoshoots/:id" do |id|
   body existingItem.to_json
 end
 
+# Sinarta uses the first handler that matches each route. Since react-router is
+# being used for routing we need to re-route all non-matching paths to index
 get "*" do
   puts "Using catch all route handler"
   render :html, :index
