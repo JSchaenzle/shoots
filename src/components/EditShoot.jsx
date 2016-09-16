@@ -7,11 +7,9 @@ export default class EditShoot extends React.Component {
     super(props);
     this.handleDetailChanged = this.handleDetailChanged.bind(this);
     this.handleUpdatePhotoshoot = this.handleUpdatePhotoshoot.bind(this);
-    // Find the matching photoshoot
-    let id = Number(props.routeParams.photoshootId);
-    let shoot = props.photoshoots.list.find(s => { return (s.id == id) } );
+    this.handleDeletePhotoshoot = this.handleDeletePhotoshoot.bind(this);
     this.state = {
-      details: shoot
+      details: props.photoshoot
     };
   }
 
@@ -24,10 +22,17 @@ export default class EditShoot extends React.Component {
     this.props.onUpdatePhotoshootClick(this.state.details);
   }
 
+  handleDeletePhotoshoot() {
+    this.props.onDeletePhotoshootClick(this.state.details.id);
+  }
+
   render() {
     return (
       <div>
         <h2>Edit Photoshoot</h2>
+        <section>
+          <input type="submit" value="Delete Photoshoot" onClick={this.handleDeletePhotoshoot}></input>
+        </section>
         <EditShootForm {...this.state.details}
                        onDetailChanged={this.handleDetailChanged} />
         <section>
@@ -40,6 +45,7 @@ export default class EditShoot extends React.Component {
 }
 
 EditShoot.propTypes = {
-  onUpdatePhotoshootClick: React.PropTypes.func.isRequired
+  onUpdatePhotoshootClick: React.PropTypes.func.isRequired,
+  onDeletePhotoshootClick: React.PropTypes.func.isRequired
 }
 

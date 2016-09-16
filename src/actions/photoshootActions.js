@@ -10,7 +10,10 @@ import {
   UPDATE_PHOTOSHOOT_ERROR,
   RETRIEVE_ALL_PHOTOSHOOTS_START,
   RETRIEVE_ALL_PHOTOSHOOTS_SUCCESS,
-  RETRIEVE_ALL_PHOTOSHOOTS_ERROR
+  RETRIEVE_ALL_PHOTOSHOOTS_ERROR,
+  DELETE_PHOTOSHOOT_START,
+  DELETE_PHOTOSHOOT_SUCCESS,
+  DELETE_PHOTOSHOOT_ERROR
 } from './actionTypes.js';
 
 const addPhotoshootStarted = () => {
@@ -150,7 +153,6 @@ export function requestRetrieveAllPhotoshoots(details) {
     .then(
       (response) => {
         let body = response;
-        console.log(response);
         return body;
       },
       (xhr, status, error) => {
@@ -168,3 +170,45 @@ export function requestRetrieveAllPhotoshoots(details) {
     });
   };
 };
+
+export const deletePhotoshootStarted = () => {
+  return {
+    type: DELETE_PHOTOSHOOT_START,
+    payload: {}
+  };
+};
+
+const deletePhotoshootSuccess = (id) => {
+  return {
+    type: DELETE_PHOTOSHOOT_SUCCESS,
+    payload: {id}
+  };
+};
+
+const deletePhotoshootError = (errorInfo) => {
+  return {
+    type: DELETE_PHOTOSHOOT_ERROR,
+    payload: {errorInfo}
+  };
+};
+
+export function requestDeletePhotoshoot(id) {
+  return (dispatch) => {
+    dispatch(deletePhotoshootStarted());
+
+    return $.ajax({
+      url: `/api/photoshoots/${id}`,
+      type: 'DELETE'
+    })
+    .then(
+      (response) => {
+        dispatch(deletePhotoshootSuccess(id));
+        browserHistory.push('/photoshoots');
+      },
+      (xhr, status, error) => {
+        console.log("Error received while deleting photoshoot");
+        dispatch(deletePhotoshootError(error));
+      });
+  };
+}
+
