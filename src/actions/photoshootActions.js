@@ -52,14 +52,14 @@ export function requestAddPhotoshoot(details) {
     return $.post('/api/photoshoots', JSON.stringify(newPost))
       .then(
         (response) => {
-          json = JSON.parse(response);
-          shoot = convertJsonToPhotoshoot(json);
+          let json = JSON.parse(response);
+          let shoot = convertJsonToPhotoshoot(json);
           dispatch(addPhotoshootSuccess(shoot));
           browserHistory.push('/photoshoots');
         },
         (xhr, status, error) => {
-          console.log("Error received while adding photoshoot");
-          addPhotoshootError(error);
+          console.log("Error received while adding photoshoot: ", error);
+          dispatch(addPhotoshootError(error));
         }
       );
   };

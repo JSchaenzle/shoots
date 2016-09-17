@@ -42,7 +42,10 @@ const photoshoots = (state = initialState, action) => {
       return copy;
 
     case RETRIEVE_ALL_PHOTOSHOOTS_SUCCESS:
-      let newState = update(state, {list: {$set: action.payload}});
+      let newState = update(state, {
+        list: {$set: action.payload},
+        retrieving: {$set: false}
+      });
       return newState;
 
     case DELETE_PHOTOSHOOT_SUCCESS: {
