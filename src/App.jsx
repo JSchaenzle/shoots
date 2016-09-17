@@ -9,7 +9,7 @@ export default React.createClass({
       width: "500px", marginRight: "auto",
       marginLeft: "auto", padding: "15px",
       borderRadius: "20px", marginTop: "30px"
-    }
+    };
 
     return (
       <div style={style}>
@@ -20,7 +20,7 @@ export default React.createClass({
         </ul>
         {this.props.children}
       </div>
-    )
+    );
   }
 });
 

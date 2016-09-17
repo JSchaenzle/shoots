@@ -48,6 +48,7 @@ post "/api/photoshoots" do
   unless photoshoot.saved?
     puts "ERROR: Photoshoot not saved."
     puts photoshoot.errors.inspect
+    status 500
   end
 
   body photoshoot.to_json
@@ -74,7 +75,6 @@ delete "/api/photoshoots/:id" do |id|
   existingItem = Photoshoot.get id.to_i
   existingItem.destroy
 end
-
 
 # Sinarta uses the first handler that matches each route. Since react-router is
 # being used for routing we need to re-route all non-matching paths to index.

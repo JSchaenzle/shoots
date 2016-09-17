@@ -52,19 +52,16 @@ export function requestAddPhotoshoot(details) {
     return $.post('/api/photoshoots', JSON.stringify(newPost))
       .then(
         (response) => {
-          return JSON.parse(response);
+          json = JSON.parse(response);
+          shoot = convertJsonToPhotoshoot(json);
+          dispatch(addPhotoshootSuccess(shoot));
+          browserHistory.push('/photoshoots');
         },
         (xhr, status, error) => {
           console.log("Error received while adding photoshoot");
           addPhotoshootError(error);
-        })
-      .then(json => {
-        return convertJsonToPhotoshoot(json);
-      })
-      .then(shoot => {
-        dispatch(addPhotoshootSuccess(shoot));
-        browserHistory.push('/photoshoots');
-      });
+        }
+      );
   };
 };
 
