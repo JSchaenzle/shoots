@@ -37,6 +37,10 @@ const addPhotoshootError = (errorInfo) => {
   };
 };
 
+const convertJsonToPhotoshoots = (json) => {
+  return json.map(convertJsonToPhotoshoot);
+};
+
 const convertJsonToPhotoshoot = (json) => {
   return Object.assign({}, json, {
     price: new Number(json.price).valueOf()
@@ -44,25 +48,36 @@ const convertJsonToPhotoshoot = (json) => {
 };
 
 export function requestAddPhotoshoot(details) {
-  return (dispatch) => {
-    dispatch(addPhotoshootStarted());
+  let newPost = Object.assign({}, details);
 
-    let newPost = Object.assign({}, details);
+  return webRequestAction(`/api/photoshoots`, {
+    method: 'POST',
+    data: JSON.stringify(newPost),
+    preRequest: addPhotoshootStarted,
+    onError: addPhotoshootError,
+    processResponseData: convertJsonToPhotoshoot,
+    onSuccess: addPhotoshootSuccess
+  });
 
-    return $.post('/api/photoshoots', JSON.stringify(newPost))
-      .then(
-        (response) => {
-          let json = JSON.parse(response);
-          let shoot = convertJsonToPhotoshoot(json);
-          dispatch(addPhotoshootSuccess(shoot));
-          browserHistory.push('/photoshoots');
-        },
-        (xhr, status, error) => {
-          console.log("Error received while adding photoshoot: ", error);
-          dispatch(addPhotoshootError(error));
-        }
-      );
-  };
+  // return (dispatch) => {
+  //   dispatch(addPhotoshootStarted());
+
+  //   let newPost = Object.assign({}, details);
+
+  //   return $.post('/api/photoshoots', JSON.stringify(newPost))
+  //     .then(
+  //       (response) => {
+  //         let json = JSON.parse(response);
+  //         let shoot = convertJsonToPhotoshoot(json);
+  //         dispatch(addPhotoshootSuccess(shoot));
+  //         browserHistory.push('/photoshoots');
+  //       },
+  //       (xhr, status, error) => {
+  //         console.log("Error received while adding photoshoot: ", error);
+  //         dispatch(addPhotoshootError(error));
+  //       }
+  //     );
+  // };
 };
 
 export const updatePhotoshootStarted = () => {
@@ -142,30 +157,49 @@ const retrieveAllPhotoshootsError = (errorInfo) => {
   };
 };
 
-export function requestRetrieveAllPhotoshoots(details) {
-  return (dispatch) => {
-    dispatch(retrieveAllPhotoshootsStarted());
+function webRequestAction(url, config) {
+  return (dispatch, getState) => {
+    dispatch(config.preRequest());
 
-    return $.get(`/api/photoshoots`)
-    .then(
-      (response) => {
-        let body = response;
-        return body;
-      },
-      (xhr, status, error) => {
-        console.log("Error received while updating photoshoot");
-        retrieveAllPhotoshootsError(error);
-      })
-    .then(json => {
-      return json.map((shoot) => {
-        return convertJsonToPhotoshoot(shoot);
-      });
+    console.log("Starting web request. State: ", getState());
+    const user = getState().accounts.activeSession.user;
+    const authToken = user ? user.auth_token : null;
+    let headers = {
+      SHOOTS_AUTH_TOKEN: authToken
+    };
+    console.log("Headers: ", headers);
+
+    return $.ajax(url, {
+      method: config.method,
+      headers: headers,
+      data: config.data,
+      statusCode: {
+        401: (xhr) => {
+          console.log("Attempting to redirect");
+          browserHistory.push("/account-access");
+        }
+      }
     })
-    .then(shoots => {
-      dispatch(retrieveAllPhotoshootsSuccess(shoots));
-   //   browserHistory.push('/photoshoots');
-    });
+      .then(
+        (response) => {
+          let result = config.processResponseData(response);
+          dispatch(config.onSuccess(result));
+        },
+        (xhr, status, error) => {
+          dispatch(config.onError(error));
+          console.log("status: ", status, error);
+        });
   };
+}
+
+export function requestRetrieveAllPhotoshoots(details) {
+  return webRequestAction(`/api/photoshoots`, {
+    method: 'GET',
+    preRequest: retrieveAllPhotoshootsStarted,
+    onError: retrieveAllPhotoshootsError,
+    processResponseData: convertJsonToPhotoshoots,
+    onSuccess: retrieveAllPhotoshootsSuccess
+  });
 };
 
 export const deletePhotoshootStarted = () => {

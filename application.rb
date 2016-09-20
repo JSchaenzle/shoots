@@ -10,6 +10,9 @@ configure do
   #set :root, 'lib/app'
   set :show_exceptions, :after_handler
   set :protection, false
+  set :bind, '0.0.0.0'
+  set :server, 'thin'
+  set :port, 5000
   enable :logging
 end
 
@@ -25,13 +28,34 @@ before do
   # sleep 1
 end
 
+
+before "/api/*" do
+  content_type 'application/json'
+
+  pass if request.path_info == "/api/users"
+
+  puts "Checking auth..."
+  token = request.env["HTTP_SHOOTS_AUTH_TOKEN"]
+  if (token)
+    @user = UserManager.getUser(token)
+    if (@user == nil)
+      puts "Use is not authorized. Invalid auth token."
+      halt 401
+    end
+  else
+    puts "User is not authorized. No auth token."
+    halt 401
+  end
+end
+
 # root page
 get "/" do
+  content_type 'text/html'
   render :html, :index
 end
 
 get "/api/photoshoots" do
-  content_type 'application/json'
+  PhotoshootManager.getAllPhotoshoots(@user)
   body Photoshoot.all.to_json
 end
 
@@ -44,6 +68,8 @@ post "/api/photoshoots" do
     :completed => newItem["completed"],
     :created_at => Time.now
   )
+  @user.photoshoots << photoshoot
+  photoshoot.save
 
   unless photoshoot.saved?
     puts "ERROR: Photoshoot not saved."
@@ -77,7 +103,11 @@ delete "/api/photoshoots/:id" do |id|
 end
 
 post "/api/users" do
-  session = {}
+  requestData = JSON.parse(request.body.read)
+  session = {
+    user: UserManager.createUser(requestData)
+  }
+  sleep 1.5
   body session.to_json
 end
 

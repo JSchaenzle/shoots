@@ -1,10 +1,10 @@
 /* ;import '../lib/app/public/styles.css';*/
-import 'babel-polyfill'
+import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import thunkMiddleware from 'redux-thunk'
-import createLogger from 'redux-logger'
-import { Router, Route, browserHistory, IndexRoute } from 'react-router'
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
+import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { PhotoshootsList } from './containers/photoshootsList.js';
@@ -14,28 +14,31 @@ import { ReportViewer } from './containers/ReportViewer.js';
 import { AccountAccess } from './containers/AccountAccess.js';
 import shootsApp from './reducers.js';
 import App from './App.jsx';
-
 import {requestRetrieveAllPhotoshoots} from "./actions/photoshootActions.js";
 
-
 const loggerMiddleware = createLogger();
+
+const savedAccountState = localStorage.getItem("account");
+const initialState = savedAccountState ?
+                     {accounts: JSON.parse(savedAccountState)} :
+                     {};
 
 console.log("Creating initial redux store...");
 let store = createStore(
   shootsApp,
+  initialState,
   applyMiddleware(
     thunkMiddleware,
     loggerMiddleware));
 
-/* console.log("initial state:", store.getState());
- *
- * let unsubscribe = store.subscribe(() => {
- *   console.log("updated redux state:", store.getState());
- * });*/
 
-/* console.log("PhotoshootCreator: ", PhotoshootCreator );*/
+let unsubscribe = store.subscribe(() => {
+  let state = store.getState();
+  localStorage.setItem("account", JSON.stringify(state.accounts));
+});
 
 
+// Start initial retrieval for all shoots
 store.dispatch(requestRetrieveAllPhotoshoots());
 
 ReactDOM.render((
@@ -55,4 +58,5 @@ ReactDOM.render((
 
     </Router>
   </Provider>
-), document.getElementById('root'))
+), document.getElementById('root'));
+

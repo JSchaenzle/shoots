@@ -29,6 +29,7 @@ export default class LoginCreateAccount extends React.Component {
 
   handleSubmitClicked() {
     const formData = Object.assign({}, this.state);
+    delete formData.mode;
     if (this.state.mode == LOGIN_MODE) {
       return this.props.onLogin(formData);
     } else {

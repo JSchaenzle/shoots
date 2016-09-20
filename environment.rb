@@ -23,6 +23,13 @@ configure do
   $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/lib")
   Dir.glob("#{File.dirname(__FILE__)}/lib/*.rb") { |lib| require File.basename(lib, '.*') }
 
+  # Load all app modules
+  Dir.glob("#{File.dirname(__FILE__)}/lib/shoots/*.rb") do |lib|
+    path = "shoots/" + File.basename(lib, '.*')
+    # puts "Loading: " + path
+    require path
+  end
+
   DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/#{Sinatra::Base.environment}.db"))
   DataMapper.finalize
   DataMapper.auto_upgrade!

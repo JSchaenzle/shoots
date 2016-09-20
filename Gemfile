@@ -11,6 +11,7 @@ gem 'dm-validations'
 gem 'dm-aggregates'
 gem 'dm-migrations'
 gem 'dm-serializer'
+gem 'thin'
 
 group :development do
   gem 'foreman'

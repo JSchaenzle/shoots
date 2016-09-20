@@ -42,8 +42,7 @@ export function requestCreateAccountAndSignIn(accountInfo) {
     return $.post('/api/users', JSON.stringify(accountInfo))
       .then(
         (response) => {
-          let json = JSON.parse(response);
-          let session = convertJsonToSession(json);
+          let session = convertJsonToSession(response);
           dispatch(createAccountSucess(session));
           // browserHistory.push('/photoshoots');
         },
