@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import EditShoot from '../components/EditShoot.jsx';
 import { requestUpdatePhotoshoot, requestDeletePhotoshoot } from '../actions/photoshootActions.js';
+import { browserHistory } from 'react-router';
 
 const mapStateToProps = (state, ownProps) => {
   let id = Number(ownProps.params.photoshootId);
@@ -10,10 +11,12 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onUpdatePhotoshootClick: (details) => {
-      dispatch(requestUpdatePhotoshoot(details));
+      dispatch(requestUpdatePhotoshoot(details))
+               .then(() => browserHistory.push("/photoshoots"));
     },
     onDeletePhotoshootClick: (id) => {
-      dispatch(requestDeletePhotoshoot(id));
+      dispatch(requestDeletePhotoshoot(id))
+        .then(() => browserHistory.push("/photoshoots"));
     }
   };
 };

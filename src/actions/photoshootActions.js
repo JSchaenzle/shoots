@@ -58,26 +58,6 @@ export function requestAddPhotoshoot(details) {
     processResponseData: convertJsonToPhotoshoot,
     onSuccess: addPhotoshootSuccess
   });
-
-  // return (dispatch) => {
-  //   dispatch(addPhotoshootStarted());
-
-  //   let newPost = Object.assign({}, details);
-
-  //   return $.post('/api/photoshoots', JSON.stringify(newPost))
-  //     .then(
-  //       (response) => {
-  //         let json = JSON.parse(response);
-  //         let shoot = convertJsonToPhotoshoot(json);
-  //         dispatch(addPhotoshootSuccess(shoot));
-  //         browserHistory.push('/photoshoots');
-  //       },
-  //       (xhr, status, error) => {
-  //         console.log("Error received while adding photoshoot: ", error);
-  //         dispatch(addPhotoshootError(error));
-  //       }
-  //     );
-  // };
 };
 
 export const updatePhotoshootStarted = () => {
@@ -102,37 +82,20 @@ const updatePhotoshootError = (errorInfo) => {
 };
 
 export function requestUpdatePhotoshoot(details) {
-  return (dispatch) => {
-    dispatch(updatePhotoshootStarted());
 
-    let updatedPost = Object.assign({}, details);
-    let id = updatedPost.id;
-    // Don't send the ID in the body. Only send it in url.
-    delete updatedPost.id;
+  let updatedPost = Object.assign({}, details);
+  let id = updatedPost.id;
+  // Don't send the ID in the body. Only send it in url.
+  delete updatedPost.id;
 
-    return $.ajax({
-      url: `/api/photoshoots/${id}`,
-      type: 'PUT',
-      contentType: "application/json; charset=utf-8",
-      dataType   : "json",
-      data: JSON.stringify(updatedPost)
-    })
-    .then(
-      (response) => {
-        return response;
-      },
-      (xhr, status, error) => {
-        console.log("Error received while updating photoshoot");
-        updatePhotoshootError(error);
-      })
-    .then(json => {
-      return convertJsonToPhotoshoot(json);
-    })
-    .then(shoot => {
-      dispatch(updatePhotoshootSuccess(shoot));
-      browserHistory.push('/photoshoots');
-    });
-  };
+  return webRequestAction(`/api/photoshoots/${id}`, {
+    method: 'PUT',
+    data: JSON.stringify(updatedPost),
+    preRequest: updatePhotoshootStarted,
+    onError: updatePhotoshootError,
+    processResponseData: convertJsonToPhotoshoot,
+    onSuccess: updatePhotoshootSuccess
+  });
 };
 
 
@@ -161,7 +124,6 @@ function webRequestAction(url, config) {
   return (dispatch, getState) => {
     dispatch(config.preRequest());
 
-    console.log("Starting web request. State: ", getState());
     const user = getState().accounts.activeSession.user;
     const authToken = user ? user.auth_token : null;
     let headers = {
@@ -175,19 +137,23 @@ function webRequestAction(url, config) {
       data: config.data,
       statusCode: {
         401: (xhr) => {
-          console.log("Attempting to redirect");
+          console.log("Redirecting to login due to unauthorized");
           browserHistory.push("/account-access");
         }
       }
     })
       .then(
         (response) => {
-          let result = config.processResponseData(response);
+          let processFunc = config.processResponseData;
+          let result = null;
+          if (processFunc) {
+            result = processFunc(response);
+          }
           dispatch(config.onSuccess(result));
         },
         (xhr, status, error) => {
           dispatch(config.onError(error));
-          console.log("status: ", status, error);
+          console.log("Error processing api request: ", url, status, error);
         });
   };
 }
@@ -224,22 +190,12 @@ const deletePhotoshootError = (errorInfo) => {
 };
 
 export function requestDeletePhotoshoot(id) {
-  return (dispatch) => {
-    dispatch(deletePhotoshootStarted());
-
-    return $.ajax({
-      url: `/api/photoshoots/${id}`,
-      type: 'DELETE'
-    })
-    .then(
-      (response) => {
-        dispatch(deletePhotoshootSuccess(id));
-        browserHistory.push('/photoshoots');
-      },
-      (xhr, status, error) => {
-        console.log("Error received while deleting photoshoot");
-        dispatch(deletePhotoshootError(error));
-      });
-  };
+  return webRequestAction(`/api/photoshoots/${id}`, {
+    method: 'DELETE',
+    preRequest: deletePhotoshootStarted,
+    onError: deletePhotoshootError,
+    processResponseData: () => id,
+    onSuccess: deletePhotoshootSuccess
+  });
 }
 

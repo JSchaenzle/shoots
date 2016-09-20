@@ -100,6 +100,8 @@ end
 delete "/api/photoshoots/:id" do |id|
   existingItem = Photoshoot.get id.to_i
   existingItem.destroy
+  empty = {}
+  body empty.to_json
 end
 
 post "/api/users" do
