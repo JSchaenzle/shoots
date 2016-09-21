@@ -28,7 +28,11 @@ const photoshoots = (state = initialState, action) => {
       return update(state, {retrieving: {$set: true}});
 
     case ADD_PHOTOSHOOT_SUCCESS:
-      return update(state, {
+      let stateCopy = Object.assign({}, state);
+      if (stateCopy.usersPhotoshoots[action.payload.userId] == null) {
+        stateCopy.usersPhotoshoots[action.payload.userId] = [];
+      }
+      return update(stateCopy, {
         retrieving: {$set: false},
         usersPhotoshoots: {[action.payload.userId]: {$push: [action.payload.photoshoot]}}
       });
