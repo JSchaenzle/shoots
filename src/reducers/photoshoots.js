@@ -28,13 +28,12 @@ const photoshoots = (state = initialState, action) => {
       return update(state, {retrieving: {$set: true}});
 
     case ADD_PHOTOSHOOT_SUCCESS:
-      let stateCopy = Object.assign({}, state);
-      if (stateCopy.usersPhotoshoots[action.payload.userId] == null) {
-        stateCopy.usersPhotoshoots[action.payload.userId] = [];
-      }
-      return update(stateCopy, {
+      // Set or append based on whether the array exists or not
+      let operation = (state.usersPhotoshoots[action.payload.userId] == null) ?
+        {$set: [action.payload.photoshoot]} : {$push: [action.payload.photoshoot]};
+      return update(state, {
         retrieving: {$set: false},
-        usersPhotoshoots: {[action.payload.userId]: {$push: [action.payload.photoshoot]}}
+        usersPhotoshoots: {[action.payload.userId]: operation}
       });
 
     case UPDATE_PHOTOSHOOT_SUCCESS:
