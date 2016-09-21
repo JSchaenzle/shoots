@@ -15,7 +15,7 @@ var update = require('react-addons-update');
 
 const initialState = {
   retrieving: false,
-  list: []
+  usersPhotoshoots: {}
 };
 
 const photoshoots = (state = initialState, action) => {
@@ -30,29 +30,31 @@ const photoshoots = (state = initialState, action) => {
     case ADD_PHOTOSHOOT_SUCCESS:
       return update(state, {
         retrieving: {$set: false},
-        list: {$push: [action.payload]}
+        usersPhotoshoots: {[action.payload.userId]: {$push: [action.payload.photoshoot]}}
       });
 
     case UPDATE_PHOTOSHOOT_SUCCESS:
       let copy = Object.assign({}, state, {retrieving: false});
-      let shoot = copy.list.find(s => {
-        return s.id == action.payload.id;
+      let selectedUsersShoots = copy.usersPhotoshoots[action.payload.userId];
+      let shoot = selectedUsersShoots.find(s => {
+        return s.id == action.payload.photoshoot.id;
       });
-      Object.assign(shoot, action.payload);
+      Object.assign(shoot, action.payload.photoshoot);
       return copy;
 
     case RETRIEVE_ALL_PHOTOSHOOTS_SUCCESS:
       let newState = update(state, {
-        list: {$set: action.payload},
+        usersPhotoshoots: {[action.payload.userId]: {$set: action.payload.photoshoots}},
         retrieving: {$set: false}
       });
       return newState;
 
     case DELETE_PHOTOSHOOT_SUCCESS: {
       let copy = Object.assign({}, state, {retrieving: false});
-      let index = copy.list.findIndex(s => s.id == action.payload.id);
+      let selectedUsersShoots = copy.usersPhotoshoots[action.payload.userId];
+      let index = selectedUsersShoots.findIndex(s => s.id == action.payload.photoshootId);
       if (index > -1) {
-        copy.list.splice(index, 1);
+        selectedUsersShoots.splice(index, 1);
       }
       return copy;
     }

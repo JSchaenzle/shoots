@@ -4,8 +4,11 @@ import { requestUpdatePhotoshoot, requestDeletePhotoshoot } from '../actions/pho
 import { browserHistory } from 'react-router';
 
 const mapStateToProps = (state, ownProps) => {
-  let id = Number(ownProps.params.photoshootId);
-  return {photoshoot: state.photoshoots.list.find(s => (s.id == id))};
+  let photoshootId = Number(ownProps.params.photoshootId);
+  let userId = state.accounts.activeSession.user.id;
+  let shoots = state.photoshoots.usersPhotoshoots[userId] || [];
+
+  return {photoshoot: shoots.find(s => (s.id == photoshootId))};
 };
 
 const mapDispatchToProps = (dispatch) => {

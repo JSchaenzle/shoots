@@ -12,6 +12,7 @@ class UserManager
         email: requestData["emailAddress"],
         auth_token: Digest::SHA1.hexdigest([Time.now, rand].join)
       });
+    raise InternalServerError unless user.saved?
     return user
   end
 

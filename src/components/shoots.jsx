@@ -1,14 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router'
+import { Link } from 'react-router';
 
 export const Shoots = (props) => {
 
-  var photoshoots = props.photoshoots.list.map((s) => {
+  var photoshoots = props.photoshoots.map((s) => {
     return (
       <li key={s.id} >
         <Link to={`/photoshoots/edit-shoot/${s.id}`} >{s.name} - {s.date}</Link>
       </li>
-    )
+    );
   });
 
   return (
@@ -29,6 +29,6 @@ export const Shoots = (props) => {
         <h3>Photoshoot history</h3>
       </div>
     </div>
-  )
+  );
 }
 

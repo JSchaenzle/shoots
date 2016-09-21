@@ -5,9 +5,7 @@ require File.join(File.dirname(__FILE__), "environment")
 require 'json'
 
 configure do
-  # set :views, "#{File.dirname(__FILE__)}/views"
   set :root, "#{File.dirname(__FILE__)}/lib/app/"
-  #set :root, 'lib/app'
   set :show_exceptions, :after_handler
   set :protection, false
   set :bind, '0.0.0.0'
@@ -28,12 +26,16 @@ before do
   # sleep 1
 end
 
-
 before "/api/*" do
+  # All routes should return json and at least an empty json object.
   content_type 'application/json'
+  empty = {}
+  body empty.to_json
 
+  # Don't proceed if the route is one of users
   pass if request.path_info == "/api/users"
 
+  # Check for properly authorized request
   puts "Checking auth..."
   token = request.env["HTTP_SHOOTS_AUTH_TOKEN"]
   if (token)
@@ -50,58 +52,30 @@ end
 
 # root page
 get "/" do
+  # Content type is set to json for all other requests so we must override here
   content_type 'text/html'
   render :html, :index
 end
 
 get "/api/photoshoots" do
-  PhotoshootManager.getAllPhotoshoots(@user)
-  body Photoshoot.all.to_json
+  photoshoots = PhotoshootManager.getAllPhotoshoots(@user)
+  body photoshoots.to_json
 end
 
 post "/api/photoshoots" do
   newItem = JSON.parse(request.body.read)
-  photoshoot = Photoshoot.create(
-    :name => newItem["name"],
-    :date => newItem["date"],
-    :price => BigDecimal.new(newItem["price"].to_s),
-    :completed => newItem["completed"],
-    :created_at => Time.now
-  )
-  @user.photoshoots << photoshoot
-  photoshoot.save
-
-  unless photoshoot.saved?
-    puts "ERROR: Photoshoot not saved."
-    puts photoshoot.errors.inspect
-    status 500
-  end
-
+  photoshoot = PhotoshootManager.addPhotoshoot(@user, newItem)
   body photoshoot.to_json
 end
 
 put "/api/photoshoots/:id" do |id|
-  updatedDetails = JSON.parse(request.body.read)
-  if updatedDetails.key? "price"
-    updatedDetails["price"]= BigDecimal.new(updatedDetails["price"].to_s)
-  end
-
-  existingItem = Photoshoot.get id.to_i
-  existingItem.update(updatedDetails)
-
-  unless existingItem.saved?
-    puts "ERROR: Photoshoot not saved."
-    puts existingItem.error.inspect
-  end
-
-  body existingItem.to_json
+  requestData = JSON.parse(request.body.read)
+  updatedShoot = PhotoshootManager.updatePhotoshoot(@user, id.to_i, requestData)
+  body updatedShoot.to_json
 end
 
 delete "/api/photoshoots/:id" do |id|
-  existingItem = Photoshoot.get id.to_i
-  existingItem.destroy
-  empty = {}
-  body empty.to_json
+  PhotoshootManager.deletePhotoshoot(@user, id.to_i)
 end
 
 post "/api/users" do
@@ -115,20 +89,29 @@ end
 
 # Sinarta uses the first handler that matches each route. Since react-router is
 # being used for routing we need to re-route all non-matching paths to index.
-# If a non-matching api is requested we return 404
 
-respond_not_found = proc { status 404 }
+# If a non-matching api is requested we return 404
+respond_not_found = proc { raise ResourceNotFoundError }
 get    "/api/*",  &respond_not_found
 post   "/api/*",  &respond_not_found
 put    "/api/*",  &respond_not_found
 patch  "/api/*",  &respond_not_found
 delete "/api/*",  &respond_not_found
 
+# Re-route all other requests to index
 get "*" do
   puts "Using catch all route handler"
   render :html, :index
 end
 
-not_found do
-  'The requested page is not found'
+# Catch and handle exceptions thrown while processing requests
+error ResourceNotFoundError do
+  body "Resource not found"
+  status 404
 end
+
+error InternalServerError do
+  body "Internal Server Error"
+  status 500
+end
+

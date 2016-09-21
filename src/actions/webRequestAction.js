@@ -27,7 +27,7 @@ export const webRequestAction = (url, config) => {
           let processFunc = config.processResponseData;
           let result = null;
           if (processFunc) {
-            result = processFunc(response);
+            result = processFunc(response, user);
           }
           dispatch(config.onSuccess(result));
         },

@@ -2,7 +2,12 @@ import { connect } from 'react-redux';
 import { Shoots } from '../components/shoots.jsx';
 
 const mapStateToProps = (state) => {
-  return {photoshoots: state.photoshoots};
+  let userId = state.accounts.activeSession.user.id;
+  let shoots = state.photoshoots.usersPhotoshoots[userId] || [];
+  return {
+    photoshoots: shoots,
+    retrieving: state.photoshoots.retrieving
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {

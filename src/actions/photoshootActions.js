@@ -53,7 +53,12 @@ export function requestAddPhotoshoot(details) {
     data: JSON.stringify(newPost),
     preRequest: addPhotoshootStarted,
     onError: addPhotoshootError,
-    processResponseData: convertJsonToPhotoshoot,
+    processResponseData: (resp, user) => {
+      return {
+        photoshoot: convertJsonToPhotoshoot(resp),
+        userId: user.id
+      };
+    },
     onSuccess: addPhotoshootSuccess
   });
 };
@@ -91,11 +96,15 @@ export function requestUpdatePhotoshoot(details) {
     data: JSON.stringify(updatedPost),
     preRequest: updatePhotoshootStarted,
     onError: updatePhotoshootError,
-    processResponseData: convertJsonToPhotoshoot,
+    processResponseData: (resp, user) => {
+      return {
+        photoshoot: convertJsonToPhotoshoot(resp),
+        userId: user.id
+      };
+    },
     onSuccess: updatePhotoshootSuccess
   });
 };
-
 
 export const retrieveAllPhotoshootsStarted = () => {
   return {
@@ -124,7 +133,12 @@ export function requestRetrieveAllPhotoshoots(details) {
     method: 'GET',
     preRequest: retrieveAllPhotoshootsStarted,
     onError: retrieveAllPhotoshootsError,
-    processResponseData: convertJsonToPhotoshoots,
+    processResponseData: (resp, user) => {
+      return {
+        photoshoots: convertJsonToPhotoshoots(resp),
+        userId: user.id
+      };
+    },
     onSuccess: retrieveAllPhotoshootsSuccess
   });
 };
@@ -136,10 +150,10 @@ export const deletePhotoshootStarted = () => {
   };
 };
 
-const deletePhotoshootSuccess = (id) => {
+const deletePhotoshootSuccess = (details) => {
   return {
     type: DELETE_PHOTOSHOOT_SUCCESS,
-    payload: {id}
+    payload: details
   };
 };
 
@@ -155,7 +169,12 @@ export function requestDeletePhotoshoot(id) {
     method: 'DELETE',
     preRequest: deletePhotoshootStarted,
     onError: deletePhotoshootError,
-    processResponseData: () => id,
+    processResponseData: (resp, user) => {
+      return {
+        photoshootId: id,
+        userId: user.id
+      };
+    },
     onSuccess: deletePhotoshootSuccess
   });
 }
