@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import {browserHistory} from 'react-router';
 
 export const webRequestAction = (url, config) => {
   return (dispatch, getState) => {
@@ -9,7 +10,6 @@ export const webRequestAction = (url, config) => {
     let headers = {
       SHOOTS_AUTH_TOKEN: authToken
     };
-    console.log("Headers: ", headers);
 
     return $.ajax(url, {
       method: config.method,
@@ -32,8 +32,11 @@ export const webRequestAction = (url, config) => {
           dispatch(config.onSuccess(result));
         },
         (xhr, status, error) => {
-          dispatch(config.onError(error));
           console.log("Error processing api request: ", url, status, error);
+          dispatch(config.onError(error));
+          // Not sure why can't user Promise.reject("ERROR") here
+          throw new Error(error);
         });
   };
-}
+};
+

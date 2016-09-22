@@ -7,6 +7,7 @@ import {
   LOG_IN_SUCCESS,
   LOG_IN_ERROR
 } from './actionTypes.js';
+import { webRequestAction } from './webRequestAction.js';
 
 const createAccountStarted = () => {
   return {
@@ -31,25 +32,51 @@ const createAccountError = (errorInfo) => {
   };
 };
 
+const logInStarted = () => {
+  return {
+    type: LOG_IN_START,
+    payload: {}
+  };
+};
+
+const logInSucess = (session) => {
+  return {
+    type: LOG_IN_SUCCESS,
+    payload: {
+      session: session
+    }
+  };
+};
+
+const logInError = (errorInfo) => {
+  return {
+    type: LOG_IN_ERROR,
+    payload: {errorInfo}
+  };
+};
+
 const convertJsonToSession = (json) => {
   return Object.assign({}, json);
 };
 
 export function requestCreateAccountAndSignIn(accountInfo) {
-  return (dispatch) => {
-    dispatch(createAccountStarted());
+  return webRequestAction("/api/users", {
+    method: "POST",
+    data: JSON.stringify(accountInfo),
+    preRequest: createAccountStarted,
+    onError: createAccountError,
+    processResponseData: convertJsonToSession,
+    onSuccess: createAccountSucess
+  });
+}
 
-    return $.post('/api/users', JSON.stringify(accountInfo))
-      .then(
-        (response) => {
-          let session = convertJsonToSession(response);
-          dispatch(createAccountSucess(session));
-          // browserHistory.push('/photoshoots');
-        },
-        (xhr, status, error) => {
-          console.log("Error received while creating account: ", error);
-          dispatch(createAccountError(error));
-        }
-      );
-  };
+export function requestSignIn(accountInfo) {
+  return webRequestAction("/api/sessions", {
+    method: "POST",
+    data: JSON.stringify(accountInfo),
+    preRequest: logInStarted,
+    onError: logInError,
+    processResponseData: convertJsonToSession,
+    onSuccess: logInSucess
+  });
 }

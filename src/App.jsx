@@ -1,9 +1,14 @@
-import React from 'react'
-import { Link } from 'react-router'
+import React from 'react';
+import { Link } from 'react-router';
+import {browserHistory} from 'react-router';
 
-export default React.createClass({
+export default class App extends React.Component {
+
+  handleLogOut() {
+    browserHistory.push("/account-access");
+  }
+
   render() {
-
     let style = {
       backgroundColor: "rgba(169,199,192,0.9)",
       width: "500px", marginRight: "auto",
@@ -14,6 +19,7 @@ export default React.createClass({
     return (
       <div style={style}>
         <h1>Shootz</h1>
+        <input type='submit' value="Log out" onClick={this.handleLogOut} ></input>
         <ul role="nav">
           <li><Link to="/photoshoots">Shoots</Link></li>
           <li><Link to="/reports">Reports</Link></li>
@@ -22,5 +28,6 @@ export default React.createClass({
       </div>
     );
   }
-});
+}
+
 

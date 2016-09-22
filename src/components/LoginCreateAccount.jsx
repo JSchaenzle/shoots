@@ -31,7 +31,7 @@ export default class LoginCreateAccount extends React.Component {
     const formData = Object.assign({}, this.state);
     delete formData.mode;
     if (this.state.mode == LOGIN_MODE) {
-      return this.props.onLogin(formData);
+      return this.props.onLogIn(formData);
     } else {
       return this.props.onCreateAccount(formData);
     }
@@ -89,6 +89,6 @@ export default class LoginCreateAccount extends React.Component {
 
 LoginCreateAccount.propTypes = {
   onCreateAccount: React.PropTypes.func.isRequired,
-  onLogin: React.PropTypes.func.isRequired
+  onLogIn: React.PropTypes.func.isRequired
 };
 

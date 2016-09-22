@@ -32,8 +32,8 @@ before "/api/*" do
   empty = {}
   body empty.to_json
 
-  # Don't proceed if the route is one of users
-  pass if request.path_info == "/api/users"
+  # Don't proceed if the route is one of users or sessions becuase those are used to create account or log in
+  pass if request.path_info == "/api/users" || request.path_info == "/api/sessions"
 
   # Check for properly authorized request
   puts "Checking auth..."
@@ -87,6 +87,15 @@ post "/api/users" do
   body session.to_json
 end
 
+post "/api/sessions" do
+  requestData = JSON.parse(request.body.read)
+  session = {
+    user: UserManager.findUser(requestData)
+  }
+  sleep 1.5
+  body session.to_json
+end
+
 # Sinarta uses the first handler that matches each route. Since react-router is
 # being used for routing we need to re-route all non-matching paths to index.
 
@@ -113,5 +122,11 @@ end
 error InternalServerError do
   body "Internal Server Error"
   status 500
+end
+
+error UnauthorizedError do
+  b = {errorTitle: "Unauthorized"}.to_json
+  body b
+  status 401
 end
 

@@ -16,4 +16,11 @@ class UserManager
     return user
   end
 
+  def self.findUser(requestData)
+    user = User.first(:email => requestData["emailAddress"])
+    puts "Found User:" + user.inspect
+    raise UnauthorizedError unless user
+    return user
+  end
+
 end
