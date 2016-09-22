@@ -12,7 +12,8 @@ const mapDispatchToProps = (dispatch) => {
     onCreateAccount: (accountInfo) => {
       console.log("Requesting create account");
       dispatch(requestCreateAccountAndSignIn(accountInfo))
-        .then(() => browserHistory.push("/photoshoots"));
+        .then(() => browserHistory.push("/photoshoots"),
+              (err) => console.log("Caught error: ", err));
     },
     onLogIn: (credentials) => {
       console.log("Requesting log in now");
