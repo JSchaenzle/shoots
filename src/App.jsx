@@ -11,7 +11,7 @@ export default class App extends React.Component {
   render() {
     let style = {
       backgroundColor: "rgba(169,199,192,0.9)",
-      width: "500px", marginRight: "auto",
+      maxWidth: "350px", marginRight: "auto",
       marginLeft: "auto", padding: "15px",
       borderRadius: "20px", marginTop: "30px"
     };

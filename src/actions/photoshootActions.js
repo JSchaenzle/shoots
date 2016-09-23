@@ -128,7 +128,7 @@ const retrieveAllPhotoshootsError = (errorInfo) => {
 };
 
 
-export function requestRetrieveAllPhotoshoots(details) {
+export function requestRetrieveAllPhotoshoots() {
   return webRequestAction(`/api/photoshoots`, {
     method: 'GET',
     preRequest: retrieveAllPhotoshootsStarted,

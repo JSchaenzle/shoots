@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { Shoots } from '../components/shoots.jsx';
+import { requestRetrieveAllPhotoshoots } from '../actions/photoshootActions.js';
 
 const mapStateToProps = (state) => {
   let shoots = [];
@@ -14,7 +15,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    refreshList: () => dispatch(requestRetrieveAllPhotoshoots())
+  };
 };
 
 export const PhotoshootsList = connect(
