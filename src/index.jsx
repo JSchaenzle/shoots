@@ -16,6 +16,8 @@ import shootsApp from './reducers.js';
 import App from './App.jsx';
 import {requestRetrieveAllPhotoshoots} from "./actions/photoshootActions.js";
 
+require('./styles/main.scss');
+
 const loggerMiddleware = createLogger();
 
 const savedAccountState = localStorage.getItem("account");

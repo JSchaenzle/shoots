@@ -4,7 +4,7 @@
   "description": "Photoshoot tracking app",
   "main": "index.jsx",
   "scripts": {
-    "dev": "webpack-dev-server --content-base lib/app/views --progress --colors",
+    "dev": "webpack-dev-server --hot --inline --config webpack.config.js --progress --colors",
     "build": "webpack --config webpack.config.js --profile --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -43,7 +43,9 @@
     "babel-preset-react": "^6.11.1",
     "css-loader": "^0.24.0",
     "jsx-loader": "^0.13.2",
+    "node-sass": "^3.10.0",
     "react-hot-loader": "^1.3.0",
+    "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.1"
