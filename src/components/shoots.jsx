@@ -19,7 +19,7 @@ export class Shoots extends React.Component {
     return (
       <div >
         <div>
-          <h2>New Photoshoot</h2>
+          <h2>New Photoshoot HORRAY!!!!!</h2>
           <Link to="/photoshoots/new-shoot">Create</Link>
         </div>
 

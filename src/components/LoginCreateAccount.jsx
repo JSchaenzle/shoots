@@ -1,13 +1,20 @@
 import React from 'react';
+import OptionallyDisplayed from './helperViews/OptionallyDisplayed.jsx';
+import TextView from './helperViews/TextView.jsx';
+import { required, mustMatch, minLength } from '../utils/validation/rules.js';
+import { ruleRunner, run } from '../utils/validation/ruleRunner.js';
+import $ from 'jquery';
+var update = require('react-addons-update');
 
 export const LOGIN_MODE = "LOGIN";
 export const CREATE_MODE = "CREATE";
 
-class OptionallyDisplayed extends React.Component {
-  render() {
-    return (this.props.display == true) ? <div>{this.props.children}</div> : null;
-  }
-}
+const fieldValidations = [
+  ruleRunner("name", "Name", required),
+  ruleRunner("emailAddress", "Email Address", required),
+  ruleRunner("password1", "Password", required, minLength(6)),
+  ruleRunner("password2", "Password Confirmation", mustMatch("password1", "Password"))
+];
 
 export default class LoginCreateAccount extends React.Component {
 
@@ -16,18 +23,29 @@ export default class LoginCreateAccount extends React.Component {
     this.handleFieldChanged = this.handleFieldChanged.bind(this);
     this.handleSubmitClicked = this.handleSubmitClicked.bind(this);
     this.handleToggleMode = this.handleToggleMode.bind(this);
+    this.errorFor = this.errorFor.bind(this);
     this.state = {
-      mode: props.mode
+      mode: props.mode,
+      name: "",
+      showErrors: false,
+      validationErrors: {}
     };
   }
 
   handleFieldChanged(field) {
     return (e) => {
-      this.setState({[field]: e.target.value});
+      let newState = update(this.state, {
+        [field]: {$set: e.target.value}
+      });
+      newState.validationErrors = run(newState, fieldValidations);
+      this.setState(newState);
     };
   }
 
   handleSubmitClicked() {
+    this.setState({showErrors: true});
+    if($.isEmptyObject(validationErrors) == false) return null;
+
     const formData = Object.assign({}, this.state);
     delete formData.mode;
     if (this.state.mode == LOGIN_MODE) {
@@ -35,6 +53,10 @@ export default class LoginCreateAccount extends React.Component {
     } else {
       return this.props.onCreateAccount(formData);
     }
+  }
+
+  errorFor(field) {
+    return this.state.validationErrors[field] || "";
   }
 
   handleToggleMode() {
@@ -62,16 +84,25 @@ export default class LoginCreateAccount extends React.Component {
       <div style={style}>
         <h3>{title}</h3>
         <OptionallyDisplayed display={inCreateMode()}>
-          <input type="text" placeholder="Name" onChange={this.handleFieldChanged("name")} />
+          <TextView placeholder="Name" showError={this.state.showErrors}
+                    text={this.props.name} onFieldChanged={this.handleFieldChanged("name")}
+                    errorText={this.errorFor("name")} />
         </OptionallyDisplayed>
         <div>
-          <input type="text" placeholder="Email address" onChange={this.handleFieldChanged("emailAddress")} />
+          <TextView placeholder="Email address" showError={this.state.showErrors}
+                    text={this.props.emailAddress} onFieldChanged={this.handleFieldChanged("emailAddress")}
+                    errorText={this.errorFor("emailAddress")} />
         </div>
         <div>
-          <input type="text" placeholder="Password" onChange={this.handleFieldChanged("password1")} />
+          <TextView placeholder="Password" showError={this.state.showErrors}
+                    text={this.props.password1} onFieldChanged={this.handleFieldChanged("password1")}
+                    errorText={this.errorFor("password1")} />
         </div>
+
         <OptionallyDisplayed display={inCreateMode()}>
-          <input type="text" placeholder="Confirm password" onChange={this.handleFieldChanged("password2")} />
+          <TextView placeholder="Confirm Password" showError={this.state.showErrors}
+                    text={this.props.password2} onFieldChanged={this.handleFieldChanged("password2")}
+                    errorText={this.errorFor("password2")} />
         </OptionallyDisplayed>
         <div>
           <input type='submit' value={submitButtonText} onClick={this.handleSubmitClicked} ></input>

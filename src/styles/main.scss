@@ -1,0 +1,30 @@
+
+$brand-primary: rgba(109, 162, 150, 0.59);
+$brand-secondary: rgba(235, 160, 15, 0.85);
+
+html {
+    font-family: sans-serif;
+    font-variant: small-caps;
+}
+
+h3 {
+    color: white;
+    background-color: $brand-secondary;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 20pt;
+}
+
+
+input {
+    font-size: 14pt;
+    margin: 2px;
+    padding: 4px;
+    width: 100%;
+    border-radius: 2px;
+    border-style: none;
+}
+
+.validation-error {
+    color: red;
+}
