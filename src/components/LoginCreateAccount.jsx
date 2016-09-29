@@ -30,6 +30,9 @@ export default class LoginCreateAccount extends React.Component {
       showErrors: false,
       validationErrors: {}
     };
+
+    // Run validations on initial state
+    this.state.validationErrors = run(this.state, fieldValidations);
   }
 
   handleFieldChanged(field) {
@@ -44,7 +47,7 @@ export default class LoginCreateAccount extends React.Component {
 
   handleSubmitClicked() {
     this.setState({showErrors: true});
-    if($.isEmptyObject(validationErrors) == false) return null;
+    if($.isEmptyObject(this.state.validationErrors) == false) return null;
 
     const formData = Object.assign({}, this.state);
     delete formData.mode;
