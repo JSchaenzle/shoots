@@ -4,7 +4,8 @@ import {
   CREATE_ACCOUNT_ERROR,
   LOG_IN_START,
   LOG_IN_SUCCESS,
-  LOG_IN_ERROR
+  LOG_IN_ERROR,
+  CLEAR_LOG_IN_CREATE_ACCOUNT_SERVER_ERROR
 } from '../actions/actionTypes.js';
 var update = require('react-addons-update');
 
@@ -19,7 +20,8 @@ const accounts = (state = initialState, action) => {
     case CREATE_ACCOUNT_START:
     case LOG_IN_START:
       return update(state, {
-        showSpinner: {$set: true}
+        showSpinner: {$set: true},
+        logInCreateAccountServerError: {$set: null}
       });
 
     case CREATE_ACCOUNT_SUCCESS:
@@ -27,6 +29,17 @@ const accounts = (state = initialState, action) => {
       return update(state, {
         activeSession: {$set: action.payload.session},
         showSpinner: {$set: false}
+      });
+
+    case CREATE_ACCOUNT_ERROR:
+    case LOG_IN_ERROR:
+      return update(state, {
+        logInCreateAccountServerError: {$set: action.payload}
+      });
+
+    case CLEAR_LOG_IN_CREATE_ACCOUNT_SERVER_ERROR:
+      return update(state, {
+        logInCreateAccountServerError: {$set: null}
       });
 
     default:

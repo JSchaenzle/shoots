@@ -5,7 +5,8 @@ import {
   CREATE_ACCOUNT_ERROR,
   LOG_IN_START,
   LOG_IN_SUCCESS,
-  LOG_IN_ERROR
+  LOG_IN_ERROR,
+  CLEAR_LOG_IN_CREATE_ACCOUNT_SERVER_ERROR
 } from './actionTypes.js';
 import { webRequestAction } from './webRequestAction.js';
 
@@ -80,3 +81,11 @@ export function requestSignIn(accountInfo) {
     onSuccess: logInSucess
   });
 }
+
+export function clearLogInCreateAccountServerError() {
+  return {
+    type: CLEAR_LOG_IN_CREATE_ACCOUNT_SERVER_ERROR,
+    payload: {}
+  };
+}
+

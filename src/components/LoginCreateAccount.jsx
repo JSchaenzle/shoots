@@ -9,12 +9,16 @@ var update = require('react-addons-update');
 export const LOGIN_MODE = "LOGIN";
 export const CREATE_MODE = "CREATE";
 
-const fieldValidations = [
+const fieldValidations = (mode) => mode === CREATE_MODE ? [
   ruleRunner("name", "Name", required),
   ruleRunner("emailAddress", "Email Address", required),
   ruleRunner("password1", "Password", required, minLength(6)),
   ruleRunner("password2", "Password Confirmation", mustMatch("password1", "Password"))
+] : [
+  ruleRunner("emailAddress", "Email Address", required),
+  ruleRunner("password1", "Password", required, minLength(6))
 ];
+
 
 export default class LoginCreateAccount extends React.Component {
 
@@ -32,7 +36,11 @@ export default class LoginCreateAccount extends React.Component {
     };
 
     // Run validations on initial state
-    this.state.validationErrors = run(this.state, fieldValidations);
+    this.state.validationErrors = run(this.state, fieldValidations(this.state.mode));
+  }
+
+  componentWillMount() {
+    this.props.onClearErrors();
   }
 
   handleFieldChanged(field) {
@@ -40,7 +48,7 @@ export default class LoginCreateAccount extends React.Component {
       let newState = update(this.state, {
         [field]: {$set: e.target.value}
       });
-      newState.validationErrors = run(newState, fieldValidations);
+      newState.validationErrors = run(newState, fieldValidations(this.state.mode));
       this.setState(newState);
     };
   }
@@ -63,6 +71,8 @@ export default class LoginCreateAccount extends React.Component {
   }
 
   handleToggleMode() {
+    this.props.onClearErrors();
+
     let newMode = this.state.mode == CREATE_MODE ? LOGIN_MODE : CREATE_MODE;
     this.setState({mode: newMode});
   }
@@ -83,9 +93,16 @@ export default class LoginCreateAccount extends React.Component {
     let toggleModeQuestion = inCreateMode() ? "Already have an account?" : "Don't have an account?";
     let toggleModeButtonText = inCreateMode() ? "Log in..." : "Create one now...";
 
+    let error = this.props.serverError ? this.props.serverError.errorInfo : "";
+
     return (
       <div style={style}>
         <h3>{title}</h3>
+        <OptionallyDisplayed display={!!error}>
+          <div className="server-error-message">
+            {error}
+          </div>
+        </OptionallyDisplayed>
         <OptionallyDisplayed display={inCreateMode()}>
           <TextView placeholder="Name" showError={this.state.showErrors}
                     text={this.props.name} onFieldChanged={this.handleFieldChanged("name")}
@@ -97,13 +114,13 @@ export default class LoginCreateAccount extends React.Component {
                     errorText={this.errorFor("emailAddress")} />
         </div>
         <div>
-          <TextView placeholder="Password" showError={this.state.showErrors}
+          <TextView placeholder="Password" showError={this.state.showErrors} type="password"
                     text={this.props.password1} onFieldChanged={this.handleFieldChanged("password1")}
                     errorText={this.errorFor("password1")} />
         </div>
 
         <OptionallyDisplayed display={inCreateMode()}>
-          <TextView placeholder="Confirm Password" showError={this.state.showErrors}
+          <TextView placeholder="Confirm Password" showError={this.state.showErrors} type="password"
                     text={this.props.password2} onFieldChanged={this.handleFieldChanged("password2")}
                     errorText={this.errorFor("password2")} />
         </OptionallyDisplayed>
@@ -123,6 +140,7 @@ export default class LoginCreateAccount extends React.Component {
 
 LoginCreateAccount.propTypes = {
   onCreateAccount: React.PropTypes.func.isRequired,
-  onLogIn: React.PropTypes.func.isRequired
+  onLogIn: React.PropTypes.func.isRequired,
+  onClearErrors: React.PropTypes.func.isRequired
 };
 

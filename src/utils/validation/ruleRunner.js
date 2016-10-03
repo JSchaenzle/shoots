@@ -12,10 +12,8 @@ export const ruleRunner = (field, name, ...validations) => {
 };
 
 export const run = (state, runners) => {
-  let errors = {};
-  runners.reduce((memo, runner) => {
-    Object.assign(errors, runner(state));
+  return runners.reduce((memo, runner) => {
+    return Object.assign(memo, runner(state));
   }, {});
-  return errors;
 };
 

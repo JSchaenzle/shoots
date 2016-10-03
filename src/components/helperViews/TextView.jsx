@@ -14,8 +14,8 @@ export default class TextField extends React.Component {
 
   render() {
     return (
-      <div>
-        <input type="text" placeholder={this.props.placeholder}
+      <div className="form-field text-field">
+        <input type={this.props.type || "text"} placeholder={this.props.placeholder}
                value={this.props.text} onChange={this.props.onFieldChanged}  />
         <OptionallyDisplayed display={this.shouldDisplayError()}>
           <div className="validation-error">

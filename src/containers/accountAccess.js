@@ -1,10 +1,17 @@
 import { connect } from 'react-redux';
 import LoginCreateAccount, {CREATE_MODE, LOGIN_MODE} from '../components/LoginCreateAccount.jsx';
-import { requestCreateAccountAndSignIn, requestSignIn } from '../actions/accountActions.js';
+import {
+  requestCreateAccountAndSignIn,
+  requestSignIn,
+  clearLogInCreateAccountServerError
+} from '../actions/accountActions.js';
 import { browserHistory } from 'react-router';
 
 const mapStateToProps = (state, ownProps) => {
-  return {mode: CREATE_MODE};
+  return {
+    mode: CREATE_MODE,
+    serverError: state.accounts.logInCreateAccountServerError
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -23,7 +30,8 @@ const mapDispatchToProps = (dispatch) => {
         }, (err) => {
           console.log("Caught error: ", err);
         });
-    }
+    },
+    onClearErrors: () => dispatch(clearLogInCreateAccountServerError())
   };
 };
 
