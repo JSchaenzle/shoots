@@ -29,21 +29,26 @@ export default class NewShoot extends React.Component {
     this.setState({photoshootDetails: updatedDetails});
   }
 
-  handleCreatePhotoshoot() {
+  handleCreatePhotoshoot(event) {
+    event.preventDefault();
     this.props.onAddPhotoshootClick(this.state.photoshootDetails);
   }
 
   render() {
     return (
-      <div>
-        <h2>New Photoshoot</h2>
-        <EditShootForm {...this.state.photoshootDetails}
-                       onDetailChanged={this.handleDetailChanged} />
-        <section>
-          <p>
-            <input type="submit" value="Create" onClick={this.handleCreatePhotoshoot}></input>
-          </p>
-        </section>
+      <div className="container">
+        <form>
+          <fieldset>
+            <h4>Add a New Photoshoot</h4>
+            <EditShootForm {...this.state.photoshootDetails}
+                          onDetailChanged={this.handleDetailChanged} />
+            <section>
+              <p>
+                <input type="submit" className="button" value="Create" onClick={this.handleCreatePhotoshoot}></input>
+              </p>
+            </section>
+          </fieldset>
+        </form>
       </div>
     );
   }

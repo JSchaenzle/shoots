@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { Shoots } from '../components/shoots.jsx';
 import { requestRetrieveAllPhotoshoots } from '../actions/photoshootActions.js';
+import { browserHistory } from 'react-router';
 
 const mapStateToProps = (state) => {
   let shoots = [];
@@ -16,7 +17,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    refreshList: () => dispatch(requestRetrieveAllPhotoshoots())
+    refreshList: () => dispatch(requestRetrieveAllPhotoshoots()),
+    editPhotoshoot:(id) => {
+      browserHistory.push(`photoshoots/edit-shoot/${id}`);
+    }
   };
 };
 

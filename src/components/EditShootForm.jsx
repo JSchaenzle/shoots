@@ -50,24 +50,29 @@ export default class EditShootForm extends React.Component {
     return (
       <div>
         <section>
-          <h4>Client Name:</h4>
-          <input type="text" value={this.props.name} onChange={this.sendChangedDetail("name")} disabled={this.props.completed}></input>
+          <label>
+            Client Name:
+            <input type="text" value={this.props.name} onChange={this.sendChangedDetail("name")} disabled={this.props.completed}></input>
+          </label>
         </section>
 
         <section>
-          <h4>Shoot Date:</h4>
-          <input type="date" value={this.formattedDate()} onChange={this.handleDateChanged} disabled={this.props.completed}></input>
+          <label>
+            Shoot Date:
+            <input type="date" value={this.formattedDate()} onChange={this.handleDateChanged} disabled={this.props.completed}></input>
+          </label>
         </section>
 
         <section>
-          <h4>Price:</h4>
-          <span>$</span>
-          <input type="number" value={this.props.price} onChange={this.handlePriceChanged} disabled={this.props.completed}></input>
+          <label htmlFor="priceField">Price:</label>
+          <input type="number" id="priceField" value={this.props.price} onChange={this.handlePriceChanged} disabled={this.props.completed}></input>
         </section>
 
         <section>
-          <h4>Completed:</h4>
-          <input type="checkbox" checked={this.props.completed} onChange={this.handleCompletedChanged}></input>
+          <label>
+            Completed:
+            <input type="checkbox" checked={this.props.completed} onChange={this.handleCompletedChanged}></input>
+          </label>
         </section>
 
       </div>

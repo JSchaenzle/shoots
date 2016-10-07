@@ -9,25 +9,28 @@ export default class App extends React.Component {
   }
 
   render() {
-    let style = {
-      backgroundColor: "rgba(169,199,192,0.9)",
-      maxWidth: "350px", marginRight: "auto",
-      marginLeft: "auto", padding: "15px",
-      borderRadius: "20px", marginTop: "30px"
-    };
-
     return (
-      <div style={style}>
-        <h1>Shootz</h1>
-        <input type='submit' value="Log out" onClick={this.handleLogOut} ></input>
-        <ul role="nav">
-          <li><Link to="/photoshoots">Shoots</Link></li>
-          <li><Link to="/reports">Reports</Link></li>
-        </ul>
+      <div className="wrapper">
+        <nav className="navigation">
+          <div className="container">
+            <a className="navigation-title">Shootz</a>
+            <ul className="navigation-list float-right">
+              <li className="navigation-item">
+                <Link className="navigation-link" to="/photoshoots">Photoshoots</Link>
+              </li>
+              <li className="navigation-item">
+                <Link className="navigation-link" to="/reports">Reports</Link>
+              </li>
+              <li className="navigation-item">
+                <input type='submit' value="Log out" onClick={this.handleLogOut} ></input>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div className="header container"></div>
         {this.props.children}
       </div>
     );
   }
 }
-
 

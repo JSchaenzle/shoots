@@ -17,6 +17,7 @@ import App from './App.jsx';
 import {requestRetrieveAllPhotoshoots} from "./actions/photoshootActions.js";
 
 require('./styles/main.scss');
+require('./styles/milligram/milligram.min.css');
 
 const loggerMiddleware = createLogger();
 

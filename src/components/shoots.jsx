@@ -7,31 +7,45 @@ export class Shoots extends React.Component {
     this.props.refreshList();
   }
 
+  handleRowSelected(shootId) {
+    return () => {
+      this.props.editPhotoshoot(shootId);
+    }
+  }
+
   render() {
     var photoshoots = this.props.photoshoots.map((s) => {
       return (
-        <li key={s.id} >
-          <Link to={`/photoshoots/edit-shoot/${s.id}`} >{s.name} - {s.date}</Link>
-        </li>
+        <tr onClick={this.handleRowSelected(s.id)} key={s.id}>
+          <td>{s.name}</td>
+          <td>{s.date}</td>
+        </tr>
       );
     });
 
     return (
-      <div >
+      <div className="container">
         <div>
-          <h2>New Photoshoot HORRAY!!!!!</h2>
-          <Link to="/photoshoots/new-shoot">Create</Link>
+          <a className="button" href="/photoshoots/new-shoot">New Photoshoot...</a>
         </div>
 
         <div>
-          <h2>Upcoming Shoots</h2>
-          <ul>
+          <h4>Upcoming Shoots</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
             {photoshoots}
-          </ul>
+            </tbody>
+          </table>
         </div>
 
         <div>
-          <h3>Photoshoot history</h3>
+          <h4>Photoshoot history</h4>
         </div>
       </div>
     );

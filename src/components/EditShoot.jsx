@@ -18,26 +18,32 @@ export default class EditShoot extends React.Component {
     this.setState({details: updatedDetails});
   }
 
-  handleUpdatePhotoshoot() {
+  handleUpdatePhotoshoot(event) {
+    event.preventDefault();
     this.props.onUpdatePhotoshootClick(this.state.details);
   }
 
-  handleDeletePhotoshoot() {
+  handleDeletePhotoshoot(event) {
+    event.preventDefault();
     this.props.onDeletePhotoshootClick(this.state.details.id);
   }
 
   render() {
     return (
-      <div>
-        <h2>Edit Photoshoot</h2>
-        <section>
-          <input type="submit" value="Delete Photoshoot" onClick={this.handleDeletePhotoshoot}></input>
-        </section>
-        <EditShootForm {...this.state.details}
-                       onDetailChanged={this.handleDetailChanged} />
-        <section>
-          <input type="submit" value="Save Changes" onClick={this.handleUpdatePhotoshoot}></input>
-        </section>
+      <div className="container">
+        <form>
+          <fieldset>
+            <h4>Edit Photoshoot</h4>
+            <section>
+              <input type="submit" value="Delete Photoshoot" onClick={this.handleDeletePhotoshoot}></input>
+            </section>
+            <EditShootForm {...this.state.details}
+                          onDetailChanged={this.handleDetailChanged} />
+            <section>
+              <input type="submit" value="Save Changes" onClick={this.handleUpdatePhotoshoot}></input>
+            </section>
+          </fieldset>
+        </form>
       </div>
     );
   }

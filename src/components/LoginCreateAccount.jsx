@@ -1,6 +1,7 @@
 import React from 'react';
 import OptionallyDisplayed from './helperViews/OptionallyDisplayed.jsx';
 import TextView from './helperViews/TextView.jsx';
+import { Link } from 'react-router';
 import { required, mustMatch, minLength } from '../utils/validation/rules.js';
 import { ruleRunner, run } from '../utils/validation/ruleRunner.js';
 import $ from 'jquery';
@@ -79,13 +80,6 @@ export default class LoginCreateAccount extends React.Component {
 
   render() {
 
-    let style = {
-      backgroundColor: "rgba(169,199,192,0.9)",
-      maxWidth: "350px", marginRight: "auto",
-      marginLeft: "auto", padding: "15px",
-      borderRadius: "20px", marginTop: "30px"
-    };
-
     let inCreateMode = () => this.state.mode == CREATE_MODE;
     let title = inCreateMode() ? "Create a new account" : "Log in to your account";
     let submitButtonText = inCreateMode() ? "Create Account" : "Log In";
@@ -96,42 +90,50 @@ export default class LoginCreateAccount extends React.Component {
     let error = this.props.serverError ? this.props.serverError.errorInfo : "";
 
     return (
-      <div style={style}>
-        <h3>{title}</h3>
-        <OptionallyDisplayed display={!!error}>
-          <div className="server-error-message">
-            {error}
+      <div className="wrapper">
+        <nav className="navigation centered">
+          <div className="container">
+            <a className="navigation-title ">Shootz</a>
           </div>
-        </OptionallyDisplayed>
-        <OptionallyDisplayed display={inCreateMode()}>
-          <TextView placeholder="Name" showError={this.state.showErrors}
-                    text={this.props.name} onFieldChanged={this.handleFieldChanged("name")}
-                    errorText={this.errorFor("name")} />
-        </OptionallyDisplayed>
-        <div>
-          <TextView placeholder="Email address" showError={this.state.showErrors}
-                    text={this.props.emailAddress} onFieldChanged={this.handleFieldChanged("emailAddress")}
-                    errorText={this.errorFor("emailAddress")} />
-        </div>
-        <div>
-          <TextView placeholder="Password" showError={this.state.showErrors} type="password"
-                    text={this.props.password1} onFieldChanged={this.handleFieldChanged("password1")}
-                    errorText={this.errorFor("password1")} />
+        </nav>
+        <div className="header container">
+          <h3>{title}</h3>
+          <OptionallyDisplayed display={!!error}>
+            <div className="server-error-message">
+              {error}
+            </div>
+          </OptionallyDisplayed>
+          <OptionallyDisplayed display={inCreateMode()}>
+            <TextView placeholder="Name" showError={this.state.showErrors}
+                      text={this.props.name} onFieldChanged={this.handleFieldChanged("name")}
+                      errorText={this.errorFor("name")} />
+          </OptionallyDisplayed>
+          <div>
+            <TextView placeholder="Email address" showError={this.state.showErrors}
+                      text={this.props.emailAddress} onFieldChanged={this.handleFieldChanged("emailAddress")}
+                      errorText={this.errorFor("emailAddress")} />
+          </div>
+          <div>
+            <TextView placeholder="Password" showError={this.state.showErrors} type="password"
+                      text={this.props.password1} onFieldChanged={this.handleFieldChanged("password1")}
+                      errorText={this.errorFor("password1")} />
+          </div>
+
+          <OptionallyDisplayed display={inCreateMode()}>
+            <TextView placeholder="Confirm Password" showError={this.state.showErrors} type="password"
+                      text={this.props.password2} onFieldChanged={this.handleFieldChanged("password2")}
+                      errorText={this.errorFor("password2")} />
+          </OptionallyDisplayed>
+          <div>
+            <input type='submit' value={submitButtonText} onClick={this.handleSubmitClicked} ></input>
+          </div>
+
+          <h4>{toggleModeQuestion}</h4>
+          <div>
+            <input type='submit' value={toggleModeButtonText} onClick={this.handleToggleMode} ></input>
+          </div>
         </div>
 
-        <OptionallyDisplayed display={inCreateMode()}>
-          <TextView placeholder="Confirm Password" showError={this.state.showErrors} type="password"
-                    text={this.props.password2} onFieldChanged={this.handleFieldChanged("password2")}
-                    errorText={this.errorFor("password2")} />
-        </OptionallyDisplayed>
-        <div>
-          <input type='submit' value={submitButtonText} onClick={this.handleSubmitClicked} ></input>
-        </div>
-
-        <h4>{toggleModeQuestion}</h4>
-        <div>
-          <input type='submit' value={toggleModeButtonText} onClick={this.handleToggleMode} ></input>
-        </div>
 
       </div>
     );
