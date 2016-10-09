@@ -1,4 +1,3 @@
-/* ;import '../lib/app/public/styles.css';*/
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -10,14 +9,16 @@ import { createStore, applyMiddleware } from 'redux';
 import { PhotoshootsList } from './containers/photoshootsList.js';
 import { PhotoshootCreator } from './containers/photoshootCreator.js';
 import { PhotoshootEditor } from './containers/PhotoshopEditor.js';
+import { ExpenseList } from './containers/expenseList.js';
+import { ExpenseCreator } from './containers/expenseCreator.js';
 import { ReportViewer } from './containers/ReportViewer.js';
 import { AccountAccess } from './containers/AccountAccess.js';
 import shootsApp from './reducers.js';
 import App from './App.jsx';
 import {requestRetrieveAllPhotoshoots} from "./actions/photoshootActions.js";
 
-require('./styles/main.scss');
 require('./styles/milligram/milligram.min.css');
+require('./styles/main.scss');
 
 const loggerMiddleware = createLogger();
 
@@ -55,6 +56,9 @@ ReactDOM.render((
         <Route path="/photoshoots" component={PhotoshootsList} />
         <Route path="/photoshoots/new-shoot" component={PhotoshootCreator} />
         <Route path="/photoshoots/edit-shoot/:photoshootId" component={PhotoshootEditor} />
+
+        <Route path="/expenses" component={ExpenseList} />
+        <Route path="/expenses/new-expense" component={ExpenseCreator} />
 
         <Route path="/reports" component={ReportViewer} />
       </Route>

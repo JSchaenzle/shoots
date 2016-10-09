@@ -46,7 +46,6 @@ export default class EditShootForm extends React.Component {
   }
 
   render() {
-    console.log("Rendering EditShootForm. Completed? ", this.props.completed);
     return (
       <div>
         <section>

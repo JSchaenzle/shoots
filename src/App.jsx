@@ -14,20 +14,29 @@ export default class App extends React.Component {
         <nav className="navigation">
           <div className="container">
             <a className="navigation-title">Shootz</a>
-            <ul className="navigation-list float-right">
+            <input id="logout-button" className="button-outline" type='submit' value="Log out" onClick={this.handleLogOut} ></input>
+          </div>
+          <div className="navigation-list">
+            <ul >
               <li className="navigation-item">
-                <Link className="navigation-link" to="/photoshoots">Photoshoots</Link>
+                <strong>
+                  <u><Link className="navigation-link" to="/photoshoots">Photoshoots</Link></u>
+                </strong>
               </li>
               <li className="navigation-item">
-                <Link className="navigation-link" to="/reports">Reports</Link>
+                <strong>
+                  <u><Link className="navigation-link" to="/expenses">Expenses</Link></u>
+                </strong>
               </li>
               <li className="navigation-item">
-                <input type='submit' value="Log out" onClick={this.handleLogOut} ></input>
+                <strong>
+                  <u><Link className="navigation-link" to="/reports">Reports</Link></u>
+                </strong>
               </li>
             </ul>
           </div>
         </nav>
-        <div className="header container"></div>
+        <div className="nav-spacer"></div>
         {this.props.children}
       </div>
     );
