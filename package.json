@@ -2,6 +2,9 @@
   "name": "shoots-web-api",
   "version": "1.0.0",
   "description": "Photoshoot tracking app",
+  "engines": {
+    "node": "6.6.0"
+  },
   "main": "index.jsx",
   "scripts": {
     "dev": "webpack-dev-server --hot --inline --config webpack.config.js --progress --colors",
