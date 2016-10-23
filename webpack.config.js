@@ -1,13 +1,14 @@
 var webpack = require('webpack');
 
 module.exports = {
-  entry: ['webpack-dev-server/client?http://localhost:8080',
-          'webpack/hot/dev-server',
-          './src/index.jsx'],
+  // entry: ['webpack-dev-server/client?http://localhost:8080',
+  //         'webpack/hot/dev-server',
+  //         './src/index.jsx'],
+  entry: ['./src/index.jsx'],
   output: {
     path: './lib/app/public',
     filename: 'app.js',
-    publicPath: 'http://localhost:8080/'
+    // publicPath: 'http://localhost:8080/'
   },
   module: {
     loaders: [
