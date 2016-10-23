@@ -19,6 +19,10 @@ group :development do
   gem 'dm-sqlite-adapter'
 end
 
+group :production do
+  gem 'dm-postgres-adapter'
+end
+
 group :test do
   gem 'rspec', :require => 'spec'
   gem 'rack-test'
