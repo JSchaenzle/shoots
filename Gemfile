@@ -1,4 +1,4 @@
-ruby '2.3.1'
+ruby '2.1.5'
 source 'https://rubygems.org'
 gem 'sinatra'
 gem 'json', '>= 1.8.3'
@@ -11,9 +11,9 @@ gem 'dm-validations'
 gem 'dm-aggregates'
 gem 'dm-migrations'
 gem 'dm-serializer'
-gem 'thin'
 
 group :development do
+  gem 'thin'
   gem 'foreman'
   gem 'pry'
   gem 'dm-sqlite-adapter'
