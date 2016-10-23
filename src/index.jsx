@@ -12,7 +12,7 @@ import { PhotoshootEditor } from './containers/PhotoshopEditor.js';
 import { ExpenseList } from './containers/expenseList.js';
 import { ExpenseCreator } from './containers/expenseCreator.js';
 import { ReportViewer } from './containers/ReportViewer.js';
-import { AccountAccess } from './containers/AccountAccess.js';
+import { AccountAccess } from './containers/accountAccess.js';
 import shootsApp from './reducers.js';
 import App from './App.jsx';
 import {requestRetrieveAllPhotoshoots} from "./actions/photoshootActions.js";
