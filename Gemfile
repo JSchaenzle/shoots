@@ -5,7 +5,6 @@ gem 'dotenv'
 gem 'rake'
 gem 'data_mapper'
 gem 'dm-core'
-gem 'dm-sqlite-adapter'
 gem 'dm-timestamps'
 gem 'dm-validations'
 gem 'dm-aggregates'
@@ -16,6 +15,7 @@ gem 'thin'
 group :development do
   gem 'foreman'
   gem 'pry'
+  gem 'dm-sqlite-adapter'
 end
 
 group :test do
