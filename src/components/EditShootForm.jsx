@@ -69,6 +69,27 @@ export default class EditShootForm extends React.Component {
 
         <section>
           <label>
+            Miles Travelled:
+            <input type="number" value={this.props.miles} onChange={this.sendChangedDetail("miles")} disabled={this.props.completed}></input>
+          </label>
+        </section>
+
+        <section>
+          <label>
+            Time Shooting:
+            <input type="number" value={this.props.shootTimeMinutes} onChange={this.sendChangedDetail("shootTimeMinutes")} disabled={this.props.completed}></input>
+          </label>
+        </section>
+
+        <section>
+          <label>
+            Time Editing:
+            <input type="number" value={this.props.editingTimeMinutes} onChange={this.sendChangedDetail("editingTimeMinutes")} disabled={this.props.completed}></input>
+          </label>
+        </section>
+
+        <section>
+          <label>
             Completed:
             <input type="checkbox" checked={this.props.completed} onChange={this.handleCompletedChanged}></input>
           </label>

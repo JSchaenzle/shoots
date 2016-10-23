@@ -15,6 +15,7 @@ gem 'thin'
 
 group :development do
   gem 'foreman'
+  gem 'pry'
 end
 
 group :test do

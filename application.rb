@@ -12,6 +12,8 @@ configure do
   set :server, 'thin'
   set :port, 5000
   enable :logging
+
+  DataMapper.auto_migrate!
 end
 
 configure :production, :development do
@@ -78,6 +80,11 @@ delete "/api/photoshoots/:id" do |id|
   PhotoshootManager.deletePhotoshoot(@user, id.to_i)
 end
 
+get "/api/reports/annual_summary/:year" do |year|
+  report = ReportManager.getAnnualReport(@user, year.to_i)
+  body report.to_json
+end
+
 post "/api/users" do
   requestData = JSON.parse(request.body.read)
   session = {
@@ -95,6 +102,7 @@ post "/api/sessions" do
   sleep 1.5
   body session.to_json
 end
+
 
 # Sinarta uses the first handler that matches each route. Since react-router is
 # being used for routing we need to re-route all non-matching paths to index.
@@ -122,6 +130,11 @@ end
 error InternalServerError do
   body "Internal Server Error"
   status 500
+end
+
+error ValidationError do
+  body env['sinatra.error'].to_json
+  status 422 # UnprocessableEntity
 end
 
 error UnauthorizedError do

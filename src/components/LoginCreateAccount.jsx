@@ -87,7 +87,8 @@ export default class LoginCreateAccount extends React.Component {
     let toggleModeQuestion = inCreateMode() ? "Already have an account?" : "Don't have an account?";
     let toggleModeButtonText = inCreateMode() ? "Log in..." : "Create one now...";
 
-    let error = this.props.serverError ? this.props.serverError.errorInfo : "";
+    let error = this.props.serverError ? this.props.serverError.errorInfo.message : "";
+    debugger;
 
     return (
       <div className="wrapper">

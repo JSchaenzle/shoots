@@ -17,7 +17,7 @@ const createAccountStarted = () => {
   };
 };
 
-const createAccountSucess = (session) => {
+const createAccountSuccess = (session) => {
   return {
     type: CREATE_ACCOUNT_SUCCESS,
     payload: {
@@ -40,7 +40,7 @@ const logInStarted = () => {
   };
 };
 
-const logInSucess = (session) => {
+const logInSuccess = (session) => {
   return {
     type: LOG_IN_SUCCESS,
     payload: {
@@ -67,7 +67,7 @@ export function requestCreateAccountAndSignIn(accountInfo) {
     preRequest: createAccountStarted,
     onError: createAccountError,
     processResponseData: convertJsonToSession,
-    onSuccess: createAccountSucess
+    onSuccess: createAccountSuccess
   });
 }
 
@@ -78,7 +78,7 @@ export function requestSignIn(accountInfo) {
     preRequest: logInStarted,
     onError: logInError,
     processResponseData: convertJsonToSession,
-    onSuccess: logInSucess
+    onSuccess: logInSuccess
   });
 }
 

@@ -26,7 +26,7 @@ export class Shoots extends React.Component {
     return (
       <div className="container">
         <div className="centered">
-          <a className="button" href="/photoshoots/new-shoot">New Photoshoot...</a>
+          <Link className="button" to="/photoshoots/new-shoot">New Photoshoot...</Link>
         </div>
 
         <div>

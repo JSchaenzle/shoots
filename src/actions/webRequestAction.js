@@ -33,7 +33,8 @@ export const webRequestAction = (url, config) => {
         },
         (xhr, status, error) => {
           console.log("Error processing api request: ", url, status, error);
-          dispatch(config.onError(error));
+          dispatch(config.onError(xhr.responseJSON || error));
+
           // Not sure why can't user Promise.reject("ERROR") here
           throw new Error(error);
         });

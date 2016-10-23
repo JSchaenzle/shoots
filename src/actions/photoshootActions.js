@@ -141,7 +141,7 @@ export function requestRetrieveAllPhotoshoots() {
     },
     onSuccess: retrieveAllPhotoshootsSuccess
   });
-};
+}
 
 export const deletePhotoshootStarted = () => {
   return {

@@ -1,3 +1,4 @@
+require 'pry'
 class UserManager
 
   def self.getUser(token)
@@ -12,7 +13,7 @@ class UserManager
         email: requestData["emailAddress"],
         auth_token: Digest::SHA1.hexdigest([Time.now, rand].join)
       });
-    raise InternalServerError unless user.saved?
+    raise ValidationError.new(user.errors) unless user.saved?
     return user
   end
 
