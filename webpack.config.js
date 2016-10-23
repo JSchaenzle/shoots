@@ -16,7 +16,8 @@ module.exports = {
       { test: /\.scss$/, loaders: ['style', 'css?sourceMap', 'sass?sourceMap']},
       { test: /\.css$/, loader: 'style!css' },
       { test: /\.js$/, loader: "babel-loader", exclude: '/node_modules/' },
-      { test: /\.jsx$/, loaders: ['react-hot', 'jsx-loader', "babel-loader"] }
+      { test: /\.jsx$/, loaders: ['jsx-loader', "babel-loader"] }
+      // { test: /\.jsx$/, loaders: ['react-hot', 'jsx-loader', "babel-loader"] }
     ]
   },
   plugins: [new webpack.HotModuleReplacementPlugin()]
