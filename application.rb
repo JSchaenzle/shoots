@@ -9,7 +9,7 @@ configure do
   set :show_exceptions, :after_handler
   set :protection, false
   set :bind, '0.0.0.0'
-  set :server, 'thin'
+  set :server, 'puma'
   set :port, 5000
   enable :logging
 
