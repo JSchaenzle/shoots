@@ -6,12 +6,11 @@ class UserManager
 
   def self.createUser(requestData)
     puts "Creating user for #{requestData}"
-    user = User.create(
-      {
-        name: requestData["name"],
-        email: requestData["emailAddress"],
-        auth_token: Digest::SHA1.hexdigest([Time.now, rand].join)
-      });
+    user = User.create({
+      name: requestData["name"],
+      email: requestData["emailAddress"].downcase,
+      auth_token: Digest::SHA1.hexdigest([Time.now, rand].join)
+    });
     raise ValidationError.new(user.errors) unless user.saved?
     return user
   end

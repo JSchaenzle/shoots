@@ -30,7 +30,12 @@ configure do
     require path
   end
 
+  DataMapper::Logger.new($stdout, :debug)
+
   DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/#{Sinatra::Base.environment}.db"))
   DataMapper.finalize
   DataMapper.auto_upgrade!
+
+  # CAUTION: The following line drops all tables and wipes all data
+  # DataMapper.auto_migrate!
 end

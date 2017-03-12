@@ -13,10 +13,10 @@ configure do
   set :port, 5000
   enable :logging
 
-  DataMapper.auto_migrate!
 end
 
 configure :production, :development do
+  # Enable React logging
   enable :logging
 end
 
@@ -138,7 +138,7 @@ error ValidationError do
 end
 
 error UnauthorizedError do
-  b = {errorTitle: "Unauthorized"}.to_json
+  b = {errorTitle: "Unauthorized", message: "Invalid Email or Password"}.to_json
   body b
   status 401
 end
