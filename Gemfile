@@ -14,7 +14,6 @@ gem 'dm-serializer'
 gem 'puma'
 
 group :development do
-  gem 'thin'
   gem 'foreman'
   gem 'pry'
   gem 'dm-sqlite-adapter'
