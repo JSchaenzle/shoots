@@ -1,3 +1,4 @@
+puts "Loading application.rb..."
 require "rubygems"
 require "bundler/setup"
 require "sinatra"
@@ -5,14 +6,17 @@ require File.join(File.dirname(__FILE__), "environment")
 require 'json'
 
 configure do
+  puts "In configure block in application.rb"
+  puts "Configuring sinatra..."
   set :root, "#{File.dirname(__FILE__)}/lib/app/"
   set :show_exceptions, :after_handler
   set :protection, false
-  set :bind, '0.0.0.0'
-  set :server, 'puma'
-  set :port, 5000
-  enable :logging
+  set :server, 'thin'
+end
 
+configure :development do
+  set :port, 9292
+  # set :bind, '0.0.0.0' This doesn't seem to work when using rackup
 end
 
 configure :production, :development do
@@ -50,13 +54,6 @@ before "/api/*" do
     puts "User is not authorized. No auth token."
     halt 401
   end
-end
-
-# root page
-get "/" do
-  # Content type is set to json for all other requests so we must override here
-  content_type 'text/html'
-  render :html, :index
 end
 
 get "/api/photoshoots" do
@@ -142,4 +139,6 @@ error UnauthorizedError do
   body b
   status 401
 end
+
+puts "Finished loading application.rb"
 

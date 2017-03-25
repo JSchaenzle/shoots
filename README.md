@@ -2,11 +2,24 @@
 
 An app for managing a photography business
 
-## Building
-`npm run build`
 
-## Starting back end
-`bundle exec foreman start`
+## Startup and Configuration Process
+### Production (Heroku)
+The production startup process proceeds in the following order:
+
+  - `bundle exce foreman start`
+    - Calls 'rackup'
+      - config.ru loads application.rb
+        - application.rb loads environment.rb
+            - environment.rb Config block runs
+                - requires all application modules
+                - sets up database
+        - application.rb Configure block runs
+            - sets sinatra root path, etc.
+      - config.ru runs Sinatra::Application
+          - The server actually starts running
+
+### Development
 
 ## Reports
  - Annual Tax Report
