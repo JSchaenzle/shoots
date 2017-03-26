@@ -1,7 +1,7 @@
 require 'date'
 
 class ReportManager
-  def self.getAnnualReport(user, year)
+  def self.get_annual_report(user, year)
     dateRange = (Date.parse("#{year}-01-01") .. Date.parse("#{year}-12-31"))
     photoshoots = user.photoshoots.all(completed: true, date: dateRange)
     totals = {

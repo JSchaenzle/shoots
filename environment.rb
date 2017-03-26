@@ -31,6 +31,11 @@ configure do
     require path
   end
 
+  if settings.environment == :development
+    require 'pry'
+    require 'pry-byebug' # stepping and continuing
+  end
+
   puts "Setting up database..."
   DataMapper::Logger.new($stdout, :debug)
   DataMapper.setup(:default, (ENV["DATABASE_URL"] || "sqlite3:///#{File.expand_path(File.dirname(__FILE__))}/#{Sinatra::Base.environment}.db"))

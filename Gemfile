@@ -12,10 +12,12 @@ gem 'dm-aggregates'
 gem 'dm-migrations'
 gem 'dm-serializer'
 gem 'thin'
+gem 'bcrypt'
 
 group :development do
   gem 'foreman'
   gem 'pry'
+  gem 'pry-byebug'
   gem 'dm-sqlite-adapter'
 end
 

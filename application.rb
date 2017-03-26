@@ -45,7 +45,7 @@ before "/api/*" do
   puts "Checking auth..."
   token = request.env["HTTP_SHOOTS_AUTH_TOKEN"]
   if (token)
-    @user = UserManager.getUser(token)
+    @user = UserManager.get_user_for_token(token)
     if (@user == nil)
       puts "Use is not authorized. Invalid auth token."
       halt 401
@@ -57,44 +57,44 @@ before "/api/*" do
 end
 
 get "/api/photoshoots" do
-  photoshoots = PhotoshootManager.getAllPhotoshoots(@user)
+  photoshoots = PhotoshootManager.get_all_photoshoots(@user)
   body photoshoots.to_json
 end
 
 post "/api/photoshoots" do
-  newItem = JSON.parse(request.body.read)
-  photoshoot = PhotoshootManager.addPhotoshoot(@user, newItem)
+  new_item = JSON.parse(request.body.read)
+  photoshoot = PhotoshootManager.add_photoshoot(@user, new_item)
   body photoshoot.to_json
 end
 
 put "/api/photoshoots/:id" do |id|
-  requestData = JSON.parse(request.body.read)
-  updatedShoot = PhotoshootManager.updatePhotoshoot(@user, id.to_i, requestData)
-  body updatedShoot.to_json
+  request_data = JSON.parse(request.body.read)
+  updated_shoot = PhotoshootManager.update_photoshoot(@user, id.to_i, request_data)
+  body updated_shoot.to_json
 end
 
 delete "/api/photoshoots/:id" do |id|
-  PhotoshootManager.deletePhotoshoot(@user, id.to_i)
+  PhotoshootManager.delete_photoshoot(@user, id.to_i)
 end
 
 get "/api/reports/annual_summary/:year" do |year|
-  report = ReportManager.getAnnualReport(@user, year.to_i)
+  report = ReportManager.get_annual_report(@user, year.to_i)
   body report.to_json
 end
 
 post "/api/users" do
-  requestData = JSON.parse(request.body.read)
+  request_data = JSON.parse(request.body.read)
   session = {
-    user: UserManager.createUser(requestData)
+    user: UserManager.create_user(request_data)
   }
   sleep 1.5
   body session.to_json
 end
 
 post "/api/sessions" do
-  requestData = JSON.parse(request.body.read)
+  request_data = JSON.parse(request.body.read)
   session = {
-    user: UserManager.findUser(requestData)
+    user: UserManager.authenticate_user(request_data)
   }
   sleep 1.5
   body session.to_json
