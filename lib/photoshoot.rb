@@ -12,6 +12,7 @@ class Photoshoot
   property :miles_traveled,  Decimal,  default: 0
   property :hours_shooting,  Decimal,  default: 0
   property :hours_editing,   Decimal,  default: 0
+  property :description,     String
 
   property :created_at,      DateTime
   property :created_on,      Date

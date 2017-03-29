@@ -37,6 +37,7 @@ class PhotoshootManager
       :miles_traveled => json_number_to_big_data(request_data["miles_traveled"]),
       :hours_shooting => json_number_to_big_data(request_data["hours_shooting"]),
       :hours_editing => json_number_to_big_data(request_data["hours_editing"]),
+      :description => request_data["description"],
     )
     user.photoshoots << photoshoot
     photoshoot.save
