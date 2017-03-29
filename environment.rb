@@ -14,7 +14,7 @@ Dotenv.load
 configure do
   puts "Running configure block from environment.rb..."
   SiteConfig = OpenStruct.new(
-                 :title => 'Shoots',
+                 :title => 'Shootz',
                  :author => 'Jordan Schaenzle',
                  :url_base => 'http://localhost:4567/'
                )

@@ -8,13 +8,13 @@ class ReportManager
       income: 0,
       hours_editing: 0,
       hours_shooting: 0,
-      miles_travelled: 0
+      miles_traveled: 0
     }
     result = photoshoots.reduce(totals) do |memo, value|
       memo.income += value.price
       memo.hours_editing += value.hours_editing
       memo.hours_shooting += value.hours_shooting
-      memo.miles_travelled += value.miles_travelled
+      memo.miles_traveled += value.miles_traveled
     end
     return result
   end
